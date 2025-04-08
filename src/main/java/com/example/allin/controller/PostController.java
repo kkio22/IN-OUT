@@ -7,6 +7,7 @@ import com.example.allin.service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +55,38 @@ public class PostController {
     public ResponseEntity<PostResponseDto> findPostById(Long postId) {
         PostResponseDto responseDto = postService.findById(postId);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
-
     }
+
+    @PatchMapping("/{postId}")
+    public ResponseEntity<PostResponseDto> updatePost(
+            @PathVariable Long postId,
+            @RequestBody PostRequestDto requestDto,
+            HttpServletRequest servletRequest
+    ) {
+        /**
+         * 로그인한 유저만 본인의 게시글 수정 가능
+         */
+        HttpSession session = servletRequest.getSession();
+        UserResponseDto loginUser = (UserResponseDto) session.getAttribute(Const.LOGIN_USER);
+
+        postService.validateOwner(postId, loginUser.getUserId());
+        PostResponseDto responseDto = postService.updatePost(postId, requestDto);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deletePost(
+            @PathVariable Long postId,
+            HttpServletRequest request
+    ) {
+        HttpSession session = request.getSession();
+        UserResponseDto loginUser = (UserResponseDto) session.getAttribute(Const.LOGIN_USER);
+        // User 테이블의 PK가 userId로 지정되어 있고 Getter가 있어야 함(통합 시 체크포인트)
+        postService.validateOwner(postId, loginUser.getUserId());
+        postService.delete(postId);
+
+        return new ResponseEntity<>(HttpStatus.Ok);
+    }
+
 
 }
