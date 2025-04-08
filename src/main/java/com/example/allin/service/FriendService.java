@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,10 +21,11 @@ public class FriendService {
     // 친구 요청(sendRequest)
     @Transactional
     public FriendResponseDto sendRequest(Long fromUserId, FriendRequestDto dto){
-        // 중복 확인
-        Optional<FriendEntity> test= Optional.ofNullable(friendRepository
-                .findByFromUserIdAndToUserId(fromUserId, dto.getToUserId())
-                .orElseThrow(() -> new IllegalArgumentException("중복된 사용자 입니다.")));
+        // 중복 확인, repository의 findByFromUserIdAndToUserId 사용.
+        friendRepository.findByFromUserIdAndToUserId(fromUserId, dto.getToUserId())
+                .ifPresent(friendEntity -> {
+                    throw new IllegalArgumentException("중복된 친구 요청입니다.");
+                });
 
         // 새로운 친구 요청
         FriendEntity friendEntity = FriendEntity.builder()
@@ -37,7 +36,7 @@ public class FriendService {
 
         friendRepository.save(friendEntity);
 
-        return new FriendResponseDto(test.get());
+        return new FriendResponseDto(friendEntity);
     }
     // 친구 요청 수락, 거절(handleRequest)
     @Transactional
@@ -56,7 +55,16 @@ public class FriendService {
                 throw new IllegalArgumentException("잘못된 요청 상황입니다.");
         }
     }
-    // 친구 목록 조회(getFriends)
+    // 친구 삭제(deleteFriend)
+    @Transactional
+    public void deleteFriend(Long friendId){
+        FriendEntity friendEntity = friendRepository.findById(friendId)
+                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 친구입니다."));
+        friendRepository.delete(friendEntity);
+    }
+
+    // 친구 목록 조회(getFriends), repository의 findByToUserIdAndStatus 사용.
+    @Transactional
     public List<FriendResponseDto> getFriends(Long userId){
         return  friendRepository.findByToUserIdAndStatus(userId, FriendStatus.CONFIRM)
                 .stream()
