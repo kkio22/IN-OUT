@@ -13,7 +13,7 @@ public class UserRequestDto {
     @NotEmpty(message = "사용자 이름을 입력해주세요.")
     @Pattern(
             regexp = "^[a-z]+$",
-            message = "username은 소문자 영어만 입력 가능합니다.")
+            message = "user은 소문자 영어만 입력 가능합니다.")
     private String user;
 
     @NotEmpty(message = "이메일을 입력해주세요")
@@ -24,7 +24,7 @@ public class UserRequestDto {
     @NotBlank(message = "비밀번호를 입력해주세요")
     @Pattern(
             regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{10,}$",
-            message = "비밀번호는 최소 10자 이상이며, 영문, 숫자, 특수문자를 포함해야 합니다."
+            message = "비밀번호는 최소 8자 이상이며, 영문, 숫자, 특수문자를 1개 이상 포함해야 합니다."
     )
     private String password;
 }
