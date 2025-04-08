@@ -14,9 +14,18 @@ public class PostResponseDto {
     private String title;
     private String postContent;
     private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    private LocalDateTime updatedAt;
 
-    public PostResponseDto(Post post);
-    this.userName = post.g
+    // User 테이블에 PK(id)가 UserId로 지정되어 있어야 함
+    public PostResponseDto(Post post) {
+        this.userName = post.getUser().getUserId();
+        this.title = post.getTitle();
+        this.postContent = post.getPostContent();
+        this.createdAt = post.getCreatedAt();
+        this.updatedAt = post.getUpdatedAt();
+
+    }
+
+
 
 }
