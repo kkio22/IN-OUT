@@ -13,7 +13,7 @@ public class User extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String username;
+    private String user;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -26,7 +26,7 @@ public class User extends BaseEntity {
     }
 
     public User(String username, String email, String password){
-        this.username=username;
+        this.user=username;
         this.email=email;
         this.password=password;
 

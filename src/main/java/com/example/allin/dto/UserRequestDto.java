@@ -14,7 +14,7 @@ public class UserRequestDto {
     @Pattern(
             regexp = "^[a-z]+$",
             message = "user은 소문자 영어만 입력 가능합니다.")
-    private String user;
+    private String username;
 
     @NotEmpty(message = "이메일을 입력해주세요")
     @Email(message = "올바른 이메일 주소를 입력해주세요")
