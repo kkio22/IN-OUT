@@ -1,4 +1,4 @@
 package com.example.allin.service;
 
-public class UserService {
+public class PostService {
 }

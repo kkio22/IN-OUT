@@ -1,4 +1,4 @@
 package com.example.allin.dto;
 
-public class UserRequestDto {
+public class PostRequestDto {
 }

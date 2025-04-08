@@ -1,7 +1,5 @@
 package com.example.allin.controller;
 
-public class UserController {
-
-//1
+public class PostController {
 
 }
