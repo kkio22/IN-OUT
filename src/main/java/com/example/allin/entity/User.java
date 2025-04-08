@@ -1,12 +1,16 @@
 package com.example.allin.entity;
 
-import jakarta.persistence.Column;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
-public class User {
+@Entity
+@Table(name ="user")
+public class User extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     private String user;
@@ -16,4 +20,8 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    public User() {
+
+    }
 }
