@@ -9,15 +9,14 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor // 생성자 자동 생성/주입(DI)
-@RequestMapping("/api/posts/")
+@RequestMapping("/posts/")
 public class PostController {
     private final PostService postService;
 
@@ -41,4 +40,21 @@ public class PostController {
         PostResponseDto responseDto = postService.createPost(requestDto, loginUser.getUserId());
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
+
+    @GetMapping
+    public ResponseEntity<List<PostResponseDto>> findPostsByPage(
+            @RequestParam(defaultValue = "1") Long offset,
+            @RequestParam(defaultValue = "10") Long limit
+    ) {
+        List<PostResponseDto> responseDtoList = postService.findByPage(offset, limit);
+        return new ResponseEntity<>(responseDtoList, HttpStatus.OK);
+    }
+
+    @GetMapping("/{postId}")
+    public ResponseEntity<PostResponseDto> findPostById(Long postId) {
+        PostResponseDto responseDto = postService.findById(postId);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+
+    }
+
 }

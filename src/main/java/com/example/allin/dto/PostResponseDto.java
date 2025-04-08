@@ -1,5 +1,6 @@
 package com.example.allin.dto;
 
+import com.example.allin.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -15,5 +16,7 @@ public class PostResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
+    public PostResponseDto(Post post);
+    this.userName = post.g
 
 }
