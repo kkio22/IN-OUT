@@ -1,8 +1,12 @@
 package com.example.allin.controller;
 
+import com.example.allin.dto.DeletePasswordRequestDto;
+import com.example.allin.dto.PasswordRequestDto;
 import com.example.allin.dto.UserRequestDto;
 import com.example.allin.dto.UserResponseDto;
 import com.example.allin.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +28,40 @@ public class UserController {
                 requestDto.getEmail(),
                 requestDto.getPassword()
         );
-        return new ResponseEntity<> (userResponseDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(userResponseDto, HttpStatus.CREATED);
 
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserResponseDto> findById (@PathVariable Long userId){
-        return new ResponseEntity<> (userService.findById(userId), HttpStatus.OK);
+    public ResponseEntity<UserResponseDto> findById(@PathVariable Long userId) {
+        return new ResponseEntity<>(userService.findById(userId), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{userId}")
+    public ResponseEntity<String> updatePassword(
+            @PathVariable Long userId,
+            @Valid @RequestBody PasswordRequestDto requestDto
+    ) {
+        userService.findByPassword(
+                userId,
+                requestDto.getOldPassword(),
+                requestDto.getNewPassword()
+        );
+        return ResponseEntity.ok("비밀번호를 변경했습니다.");
+    }
+
+    @PatchMapping("/{userId}")
+    public ResponseEntity<String> deletePassword(
+            @PathVariable Long userId,
+            @Valid @RequestBody DeletePasswordRequestDto requestDto,
+            HttpServletRequest httpServletRequest
+
+    ) {
+        HttpSession session = httpServletRequest.getSession();//이미 로그인 한번 한 후에 하니까 session이 있는 상황
+        UserResponseDto userResponseDto =  (UserResponseDto) session.getAttribute("userResponseDto");//sessionId값 = 이게 USER객체 정보 담고 있음
+
+        userService.deletePassword(userId, requestDto.getPassword(),userResponseDto);
+
+        return ResponseEntity.ok("회원을 삭제했습니다.");
     }
 }

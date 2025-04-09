@@ -7,5 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public class UserResponseDto {
 
+    private Long id;
+
     private String username;
+
 }
