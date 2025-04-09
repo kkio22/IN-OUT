@@ -2,6 +2,7 @@ package com.example.allin.controller;
 
 import com.example.allin.dto.LoginRequestDto;
 import com.example.allin.dto.LoginResponseDto;
+import com.example.allin.dto.SessionResponseDto;
 import com.example.allin.service.LoginService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -27,6 +28,8 @@ public class LoginController {
 
         LoginResponseDto loginResponseDto = loginService.login(loginRequestDto);
 
+        SessionResponseDto sessionResponseDto = new SessionResponseDto(loginResponseDto.getId(), loginRequestDto.getEmail());
+
         // 세션 생성
         HttpSession session = httpServletRequest.getSession(true);
 
@@ -34,7 +37,7 @@ public class LoginController {
          * session.setAttribute(String name, Object value)
          * 사용자 정보를 세션에 저장할 때 쓰는 아주 기본적인 메서드
          */
-        session.setAttribute("userId", loginResponseDto);
+        session.setAttribute("sessionResponseDto", sessionResponseDto);
 //        session.setMaxInactiveInterval(3600);  // 초 단위로 세션 종료 시간 지정 -> 3600초 동안 유효한 세션
 
         return new ResponseEntity<>(loginResponseDto, HttpStatus.OK);

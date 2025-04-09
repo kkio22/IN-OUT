@@ -5,7 +5,6 @@ import com.example.allin.dto.LoginRequestDto;
 import com.example.allin.dto.LoginResponseDto;
 import com.example.allin.entity.User;
 import com.example.allin.repository.UserRepository;
-import jakarta.servlet.ServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,13 +17,12 @@ public class LoginService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ServletRequest httpServletRequest;
 
     // 로그인
     @Transactional
     public LoginResponseDto login (LoginRequestDto loginRequestDto) {
 
-        User existingUser = userRepository.findByEmail(email).orElseThrow(()
+        User existingUser = userRepository.findByEmail(loginRequestDto.getEmail()).orElseThrow(()
                 -> new ResponseStatusException(HttpStatus.NOT_FOUND, "가입되지 않은 이메일입니다."));
 
         if (!passwordEncoder.matches(existingUser.getPassword(), loginRequestDto.getPassword())) {

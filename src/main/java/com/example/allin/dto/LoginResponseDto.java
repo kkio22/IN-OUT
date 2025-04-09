@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class LoginResponseDto {
 
-    private Long userId;
-    private String name;
+    private Long id;
+    private String username;
     private String message;
 }

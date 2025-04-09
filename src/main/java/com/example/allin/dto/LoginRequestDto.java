@@ -26,4 +26,5 @@ public class LoginRequestDto {
             message = "비밀번호는 최소 8자 이상이며, 대소문자를 포함한 영문, 숫자, 특수문자를 최소 1글자씩 포함해야 합니다.")
     @Size(min = 8, message = "비밀번호는 최소 8글자 이상이어야 합니다.")
     private final String password;
+
 }
