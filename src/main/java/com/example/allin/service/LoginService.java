@@ -6,7 +6,6 @@ import com.example.allin.dto.LoginResponseDto;
 import com.example.allin.entity.User;
 import com.example.allin.repository.UserRepository;
 import jakarta.servlet.ServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,28 +22,17 @@ public class LoginService {
 
     // 로그인
     @Transactional
-    public LoginResponseDto login (LoginRequestDto loginRequestDto, Long id) {
+    public LoginResponseDto login (LoginRequestDto loginRequestDto) {
 
         User existingUser = userRepository.findByEmail(email).orElseThrow(()
                 -> new ResponseStatusException(HttpStatus.NOT_FOUND, "가입되지 않은 이메일입니다."));
 
         if (!passwordEncoder.matches(existingUser.getPassword(), loginRequestDto.getPassword())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.")
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
         }
 
-        // 세션 생성
-        HttpSession session = httpServletRequest.getSession(true);
-
-        /**
-         * session.setAttribute(String name, Object value)
-         * 사용자 정보를 세션에 저장할 때 쓰는 아주 기본적인 메서드
-         */
-        session.setAttribute("userId", existingUser.getId());
-
-        return new LoginResponseDto(existingUser.getId(), existingUser.getUserName(), "로그인 성공했습니다.");
+        return new LoginResponseDto(existingUser.getId(), existingUser.getUser(), "로그인 성공했습니다.");
 
     }
-
-
 
 }
