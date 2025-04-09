@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class FriendController {
@@ -46,5 +48,12 @@ public class FriendController {
     }
 
     // 친구 목록 조회(getFriends)
+    @GetMapping("/friends/{userId}")
+    public ResponseEntity<List<FriendResponseDto>> getFriends(
+            @PathVariable Long userId){
+        List<FriendResponseDto> friends = friendService.getFriends(userId);
+        return ResponseEntity.ok(friends);
+    }
+
 
 }
