@@ -25,8 +25,6 @@ public class FriendController {
         return ResponseEntity.status(HttpStatus.CREATED).body("친구 요청을 보냈습니다.");
     }
 
-
-
     // 친구 요청 수락하거나 거절(handleRequest)
     @PostMapping("/friends/{friendId}")
     public ResponseEntity<String> handleRequest(
