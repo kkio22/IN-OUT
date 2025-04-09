@@ -1,7 +1,11 @@
 package com.example.allin.exception;
 
-public class LoginCustomException extends RuntimeException {
-    public LoginCustomException(String message) {
-        super(message);
+import lombok.Getter;
+
+@Getter
+public class LoginCustomException extends CustomException {
+
+    public LoginCustomException(ErrorCode errorCode) {
+        super(errorCode);
     }
 }
