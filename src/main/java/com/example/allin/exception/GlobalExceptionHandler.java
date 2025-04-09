@@ -16,20 +16,24 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handlerMethodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest httpservletRequest) {
         log.error("MethodArgumentNotValidException :{}", e.getMessage()); //내부 디버그용 에러 메세지
-        ErrorCode errorCode = ErrorCode.INVALID_INPUT_VALUE;// errorCode에 INVALID_INPUT_VALUE 저장
-        String errorMessage = e.getBindingResult().getFieldErrors() != null ?
-                e.getBindingResult().getFieldError().getDefaultMessage() : errorCode.getMessage();
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                .status(errorCode.getStatus())
-                .error(errorCode.getError())
-                .code(errorCode.getCode())
-                .message(errorMessage)
-                .build();
-        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
-
-
-
-
 
     }
+
+    @ExceptionHandler(PasswordMismatchException.class)
+    public ResponseEntity<ErrorResponse> handlerPasswordMismatchException(PasswordMismatchException e, HttpServletRequest httpServletRequest) {
+        log.error("PasswordMismatchException :{}", e.getMessage());
+
+    }
+
+    @ExceptionHandler(UserIdMismatchException.class)
+    public ResponseEntity<ErrorResponse> handlerUserIdMismatchException(UserIdMismatchException e, HttpServletRequest httpServletRequest){
+
+    }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<ErrorResponse> handlerInvalidPasswordException(InvalidPasswordException e, HttpServletRequest httpServletRequest){
+
+    }
+
+
 }

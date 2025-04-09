@@ -58,7 +58,7 @@ public class UserController {
 
     ) {
         HttpSession session = httpServletRequest.getSession();//이미 로그인 한번 한 후에 하니까 session이 있는 상황
-        UserResponseDto userResponseDto =  (UserResponseDto) session.getAttribute("userResponseDto");//sessionId값 = 이게 USER객체 정보 담고 있음
+        UserResponseDto userResponseDto =  (UserResponseDto) session.getAttribute("");//sessionId값 = 이게 USER객체 정보 담고 있음
 
         userService.deletePassword(userId, requestDto.getPassword(),userResponseDto);
 

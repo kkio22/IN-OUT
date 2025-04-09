@@ -10,8 +10,6 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Table(name ="user")
-@SQLDelete(sql = "UPDATE user SET deleted_at = NOW() WHERE id=? ")
-@Where(clause = "deleted_at IS NULL")
 public class User extends BaseEntity {
 
     @Id
@@ -27,6 +25,8 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
+    //아무것도 안 쓰면 nullable = true
+    @Column
    private LocalDateTime deletedAt;
 
 
@@ -43,5 +43,9 @@ public class User extends BaseEntity {
 
     public void editPassword (String password){
         this.password=password;
+    }
+
+    public void softDelete(){
+        this.deletedAt= LocalDateTime.now();
     }
 }
