@@ -3,6 +3,10 @@ package com.example.allin.service;
 import com.example.allin.config.PasswordEncoder;
 import com.example.allin.dto.UserResponseDto;
 import com.example.allin.entity.User;
+import com.example.allin.exception.ErrorCode;
+import com.example.allin.exception.InvalidPasswordException;
+import com.example.allin.exception.PasswordMismatchException;
+import com.example.allin.exception.UserIdMismatchException;
 import com.example.allin.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
@@ -42,11 +46,11 @@ public class UserService {
         User findPassword = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
 
         if (!passwordEncoder.matches(oldPassword, findPassword.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 다릅니다.");
+            throw new PasswordMismatchException(ErrorCode.INVALID_INPUT_Password);
 
         }
         if (passwordEncoder.matches(newPassword, findPassword.getPassword())) {
-            throw new IllegalArgumentException("이전 비밀번호와 같습니다.");
+            throw new InvalidPasswordException(ErrorCode.DUPLICATE_PASSWORD);
         }
 
 
@@ -59,11 +63,13 @@ public class UserService {
         User findPassword = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
 
         if (!findPassword.getEmail().equals()) {
-            throw new IllegalArgumentException("아이디가 다릅니다.");
+            throw new UserIdMismatchException(ErrorCode.INVALID_INPUT_ID);
         }
         if (!passwordEncoder.matches(password, findPassword.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 다릅니다.");
+            throw new PasswordMismatchException(ErrorCode.INVALID_INPUT_Password);
         }
 
+        //그 삭제 요청으로 들어오면 해당 시간 값을 넣어주는 매서드를 만들어서 값을 넣어주면 됨
+        findPassword.softDelete();
     }
 }

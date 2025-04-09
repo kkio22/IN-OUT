@@ -12,7 +12,9 @@ public enum ErrorCode {
 
     INVALID_INPUT_ID(400, "BAD_REQUEST", "U002", "아이디가 다릅니다." ),
 
-    DUPLICATE_PASSWORD(400, "BAD_REQUEST", "U003", "이전 비밀번호와 같습니다.");
+    DUPLICATE_PASSWORD(400, "BAD_REQUEST", "U003", "이전 비밀번호와 같습니다."),
+
+    INVALID_INPUT_VALUE( 400, "BAD_REQUEST", "U004", "Invalid Input Value");
 
 
     private final int status; //에러 상태 번호

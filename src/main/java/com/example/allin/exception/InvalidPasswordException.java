@@ -4,12 +4,11 @@ import lombok.Getter;
 
 @Getter
 
-public class InvalidPasswordException extends RuntimeException {
+public class InvalidPasswordException extends CustomException {
 
-    private final ErrorCode errorCode;
 
     public InvalidPasswordException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+        super(errorCode);
     }
 }
+
