@@ -4,6 +4,8 @@ import com.example.allin.dto.FriendRequestDto;
 import com.example.allin.dto.FriendResponseDto;
 import com.example.allin.entity.FriendEntity;
 import com.example.allin.entity.FriendStatus;
+import com.example.allin.exception.ErrorCode;
+import com.example.allin.exception.FriendCustomException;
 import com.example.allin.repository.FriendRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,7 @@ public class FriendService {
         // 중복 확인, repository의 findByFromUserIdAndToUserId 사용.
         friendRepository.findByFromUserIdAndToUserId(fromUserId, dto.getToUserId())
                 .ifPresent(friendEntity -> {
-                    throw new IllegalArgumentException("중복된 친구 요청입니다.");
+                    throw new FriendCustomException(ErrorCode.FRIEND_REQUEST_SENT);
                 });
 
         // 새로운 친구 요청
@@ -42,7 +44,7 @@ public class FriendService {
     @Transactional
     public String handleRequest(Long friendId, String action){
         FriendEntity friendEntity = friendRepository.findById(friendId)
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 요청입니다."));
+                .orElseThrow(() -> new FriendCustomException(ErrorCode.FRIEND_NOT_FOUND));
 
         switch (action.toUpperCase()){
             case "CONFIRM":
@@ -52,14 +54,14 @@ public class FriendService {
                 friendEntity.reject();
                 return "친구 요청을 거절했습니다.";
             default:
-                throw new IllegalArgumentException("잘못된 요청 상황입니다.");
+                throw new FriendCustomException(ErrorCode.INVALID_FRIEND);
         }
     }
     // 친구 삭제(deleteFriend)
     @Transactional
     public void deleteFriend(Long friendId){
         FriendEntity friendEntity = friendRepository.findById(friendId)
-                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 친구입니다."));
+                .orElseThrow(()-> new FriendCustomException(ErrorCode.FRIEND_NOT_FOUND));
         friendRepository.delete(friendEntity);
     }
 
