@@ -32,9 +32,9 @@ public class FriendController {
     public ResponseEntity<String> handleRequest(
             @PathVariable Long friendId,
             @RequestBody String response){
-        if(!response.equalsIgnoreCase("confirm")){
-            throw new IllegalArgumentException("잘못된 요청입니다.");
-        }
+//        if(!response.equalsIgnoreCase("confirm")){
+//            throw new IllegalArgumentException("잘못된 요청입니다.");
+//        }
         friendService.handleRequest(friendId, response);
         return ResponseEntity.ok("친구 요청을 수락했습니다.");
     }
