@@ -4,6 +4,7 @@ import com.example.allin.dto.FriendRequestDto;
 import com.example.allin.dto.FriendResponseDto;
 import com.example.allin.entity.FriendEntity;
 import com.example.allin.service.FriendService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class FriendController {
     // 친구 요청 보내기
     @PostMapping("/friends")
     public ResponseEntity<String> sendRequest(
-            @RequestBody FriendRequestDto dto){
+            @RequestBody @Valid FriendRequestDto dto){
         friendService.sendRequest(dto.getFromUserId(), dto);
         return ResponseEntity.status(HttpStatus.CREATED).body("친구 요청을 보냈습니다.");
     }
