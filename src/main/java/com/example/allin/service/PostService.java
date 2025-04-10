@@ -61,17 +61,12 @@ public class PostService implements PostServiceInterface {
     /**
      *
      * @param postId 조회하는 postId
-     * @param userId 로그인한 UserId
-     * @return
+     * * @return
      */
     @Override
-    public PostResponseDto findById(Long postId, Long userId) {
+    public PostResponseDto findById(Long postId) {
         Post findPost = postRepository.findByIdOrElseThrow(postId);
-        User findUser = userRepository.findById(userId)
-                .orElseThrow(()-> new PostCustomException(USER_NOT_FOUND));
-
-        boolean isLiked = postLikeRepository.existsByPostAndUser(findPost, findUser); // 로그인한 유저가 해당 게시물을 좋아요 했는지
-        return new PostResponseDto(findPost, isLiked);
+        return new PostResponseDto(findPost);
     }
 
 

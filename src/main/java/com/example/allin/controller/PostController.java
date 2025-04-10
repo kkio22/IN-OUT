@@ -43,10 +43,9 @@ public class PostController implements PostControllerInterface {
     // 게시물 개별 조회(게시물 id)
     @GetMapping("/{postId}")
     public ResponseEntity<PostResponseDto> findPostById(
-            @PathVariable Long postId,
-            @SessionAttribute(name = "sessionResponseDto") SessionResponseDto sessionResponseDto
+            @PathVariable Long postId
     ) {
-        PostResponseDto responseDto = postService.findById(postId, sessionResponseDto.getId());
+        PostResponseDto responseDto = postService.findById(postId);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 

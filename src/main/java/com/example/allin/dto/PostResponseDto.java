@@ -25,8 +25,6 @@ public class PostResponseDto {
         this.postContent = post.getPostContent();
         this.createdAt = post.getCreatedAt();
         this.updatedAt = post.getUpdatedAt();
-        this.likeCount = post.getLikeCount();
-        this.isLiked = isLiked;
     }
 
     public PostResponseDto(Post post) {
@@ -35,7 +33,6 @@ public class PostResponseDto {
         this.postContent = post.getPostContent();
         this.createdAt = post.getCreatedAt();
         this.updatedAt = post.getUpdatedAt();
-        this.likeCount = post.getLikeCount();
     }
 
 
