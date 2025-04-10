@@ -29,7 +29,7 @@ public class LoginService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
         }
 
-        return new LoginResponseDto(existingUser.getId(), existingUser.getUser(), "로그인 성공했습니다.");
+        return new LoginResponseDto(existingUser.getId(), existingUser.getUsername(), "로그인 성공했습니다.");
 
     }
 

@@ -21,7 +21,7 @@ public class CommentService {
 
     public CommentResponseDto create(CommentRequestDto dto) {
         Comment comment = Comment.builder()
-                .commentContent(dto.content())
+                .commentContent(dto.commentContent())
                 .likeCount(0)
                 .build();
         commentRepository.save(comment);
@@ -34,7 +34,7 @@ public class CommentService {
 
     public CommentResponseDto update(Long id, CommentRequestDto dto) {
         Comment comment = find(id);
-        comment.update(dto.content());
+        comment.update(dto.commentContent());
         return toDto(comment);
     }
 
@@ -77,6 +77,10 @@ public class CommentService {
     }
 
     private CommentResponseDto toDto(Comment comment) {
-        return new CommentResponseDto(comment.getCommentContent(), comment.getLikeCount());
+        return new CommentResponseDto(
+                comment.getUser().getUsername(),
+                comment.getCommentContent(),
+                comment.getLikeCount()
+        );
     }
 }
