@@ -2,8 +2,11 @@ package com.example.allin.service;
 
 import com.example.allin.dto.*;
 import com.example.allin.entity.*;
+import com.example.allin.exception.CommentLikeNotFoundException;
+import com.example.allin.exception.CommentNotFoundException;
+import com.example.allin.exception.ErrorCode;
 import com.example.allin.repository.*;
-import com.example.allin.exception.NotFoundException;
+import com.example.allin.exception.CommentUserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -42,7 +45,7 @@ public class CommentService {
     public String like(Long id, UserDetails userDetails) {
         Comment comment = find(id);
         User user = userRepository.findByEmail(userDetails.getUsername())
-                .orElseThrow(() -> new NotFoundException("사용자 없음"));
+                .orElseThrow(() -> new CommentUserNotFoundException(ErrorCode.COMMENT_USER_NOT_FOUND));
 
         if (commentLikeRepository.findByUserAndComment(user, comment).isPresent()) {
             return "이미 좋아요한 댓글입니다.";
@@ -57,10 +60,10 @@ public class CommentService {
     public String unlike(Long id, UserDetails userDetails) {
         Comment comment = find(id);
         User user = userRepository.findByEmail(userDetails.getUsername())
-                .orElseThrow(() -> new NotFoundException("사용자 없음"));
+                .orElseThrow(() -> new CommentUserNotFoundException(ErrorCode.COMMENT_USER_NOT_FOUND));
 
         CommentLike like = commentLikeRepository.findByUserAndComment(user, comment)
-                .orElseThrow(() -> new NotFoundException("좋아요한 기록이 없습니다."));
+                .orElseThrow(() -> new CommentLikeNotFoundException(ErrorCode.COMMENT_LIKE_NOT_FOUND));
 
         commentLikeRepository.delete(like);
         comment.unlike();
@@ -70,7 +73,7 @@ public class CommentService {
 
     private Comment find(Long id) {
         return commentRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("댓글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new CommentNotFoundException(ErrorCode.COMMENT_NOT_FOUND));
     }
 
     private CommentResponseDto toDto(Comment comment) {
