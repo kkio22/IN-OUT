@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@RestControllerAdvice// 이건 1개만 작성해야 함
+@RestControllerAdvice
 
 public class GlobalExceptionHandler {
 
@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
         log.error("MethodArgumentNotValidException :{}", e.getMessage()); //내부 디버그용 에러 메세지
         ErrorCode errorCode = ErrorCode.INVALID_INPUT_VALUE;// errorCode에 INVALID_INPUT_VALUE 저장
         String errorMessage = e.getBindingResult().getFieldErrors() != null ?
-                e.getBindingResult().getFieldError().getDefaultMessage() : errorCode.getMessage();
+                e.getBindingResult().getFieldError().getDefaultMessage() : errorCode.getMessage();//이거 내가 valid에 있는 message 꺼내기 위해 작성
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .status(errorCode.getStatus())
                 .error(errorCode.getError())
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(PasswordMismatchException.class)
     public ResponseEntity<ErrorResponse> handlerPasswordMismatchException(PasswordMismatchException e, HttpServletRequest httpServletRequest) {
-        log.error("PasswordMismatchException :{}", e.getMessage());//디버그용 에러 메세지
+        log.error("PasswordMismatchException :{}", e.getMessage());//디버그용 에러 메세지, e에 들어간 건 지금은 errorcode에 있는 거지만, 원래는 ()안에 글을 넣으면 e에 넣는 문구랑, errorcode에 넣는 문구랑 달라서 원하는 것 가져올 수 있음, PasswordMismatchException 클래스에 생성자에 super로 값 넣음
         ErrorCode errorCode = e.getErrorCode();
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .status(errorCode.getStatus())// 사용자가 볼 수 있게 JSON 형태로 보내는 BODY에 들어가는 것
@@ -73,12 +73,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
 
     }
-
-
-
-
-
-
 
 
 }

@@ -8,7 +8,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 //이건 1개만 만들어야 함 (혐업할 때)
 @Getter
-@Builder
+@Builder//물어봐야 겠다.
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponse {
     

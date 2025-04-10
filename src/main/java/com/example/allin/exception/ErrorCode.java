@@ -8,7 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ErrorCode {
 
-    INVALID_INPUT_Password(400, "BAD_REQUEST", "U001","비밀번호가 다릅니다."),
+    INVALID_INPUT_PASSWORD(400, "BAD_REQUEST", "U001","비밀번호가 다릅니다."),
 
     INVALID_INPUT_ID(400, "BAD_REQUEST", "U002", "아이디가 다릅니다." ),
 

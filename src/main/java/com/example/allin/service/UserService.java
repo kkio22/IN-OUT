@@ -46,7 +46,7 @@ public class UserService {
         User findPassword = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
 
         if (!passwordEncoder.matches(oldPassword, findPassword.getPassword())) {
-            throw new PasswordMismatchException(ErrorCode.INVALID_INPUT_Password);
+            throw new PasswordMismatchException(ErrorCode.INVALID_INPUT_PASSWORD);
 
         }
         if (passwordEncoder.matches(newPassword, findPassword.getPassword())) {
@@ -59,14 +59,14 @@ public class UserService {
     }
 
     @Transactional
-    public void deletePassword(Long userId, String password, UserResponseDto userResponseDto) {
+    public void deletePassword(Long userId, String password, SessionResponseDto sessionResponseDto) {
         User findPassword = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
 
-        if (!findPassword.getEmail().equals()) {
+        if (!findPassword.getEmail().equals(sessionResponseDto.)) {
             throw new UserIdMismatchException(ErrorCode.INVALID_INPUT_ID);
         }
         if (!passwordEncoder.matches(password, findPassword.getPassword())) {
-            throw new PasswordMismatchException(ErrorCode.INVALID_INPUT_Password);
+            throw new PasswordMismatchException(ErrorCode.INVALID_INPUT_PASSWORD);
         }
 
         //그 삭제 요청으로 들어오면 해당 시간 값을 넣어주는 매서드를 만들어서 값을 넣어주면 됨

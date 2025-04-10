@@ -58,9 +58,9 @@ public class UserController {
 
     ) {
         HttpSession session = httpServletRequest.getSession();//이미 로그인 한번 한 후에 하니까 session이 있는 상황
-        UserResponseDto userResponseDto =  (UserResponseDto) session.getAttribute("");//sessionId값 = 이게 USER객체 정보 담고 있음
+        SessionResponseDto sessionResponseDto =  (SessionResponseDto)session.getAttribute("sessionResponseDto");//sessionId값 = 이게 USER객체 정보 담고 있음
 
-        userService.deletePassword(userId, requestDto.getPassword(),userResponseDto);
+        userService.deletePassword(userId, requestDto.getPassword(),sessionResponseDto);
 
         return ResponseEntity.ok("회원을 삭제했습니다.");
     }
