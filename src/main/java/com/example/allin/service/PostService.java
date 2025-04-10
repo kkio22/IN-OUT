@@ -61,8 +61,7 @@ public class PostService implements PostServiceInterface {
 
     /**
      *
-     * @param userId ... 프론트에서 유저 이름을 누르면 /users/{userId} 로 이동한다고 가정.
-     *               유저 조회 화면에서, 유저별 게시물 리스트 보여주는 메서드 (User에서 GetMapping할 때 이 메서드 갖다 쓰도록 설계)
+     * @param userId ... 유저 조회 화면에서, 유저별 게시물 리스트 보여주는 메서드 (User에서 GetMapping할 때 이 메서드 갖다 쓰도록 설계)
      *               **userId가 없는 경우의 예외는 user단에서 처리한 것으로 가정**
      * @return
      */

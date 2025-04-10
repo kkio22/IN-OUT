@@ -1,20 +1,14 @@
 package com.example.allin.controller;
 
-import com.example.allin.common.Const;
 import com.example.allin.dto.PostRequestDto;
 import com.example.allin.dto.PostResponseDto;
 import com.example.allin.service.PostService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -27,7 +21,7 @@ public class PostController implements PostControllerInterface {
     @PostMapping
     public ResponseEntity<PostResponseDto> createPost(
             @Validated @RequestBody PostRequestDto requestDto,
-            @SessionAttribute(name = Const.LOGIN_USER) SessionResponseDto sessionResponseDto
+            @SessionAttribute(name = "loginUser") SessionResponseDto sessionResponseDto
             ) {
         PostResponseDto responseDto = postService.createPost(requestDto, sessionResponseDto.getUserId());
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
@@ -53,12 +47,12 @@ public class PostController implements PostControllerInterface {
     public ResponseEntity<PostResponseDto> updatePost(
             @PathVariable Long postId,
             @Validated @RequestBody PostRequestDto requestDto,
-            @SessionAttribute(name = Const.LOGIN_USER) Long userId
+            @SessionAttribute(name = "loginUser") SessionResponseDto sessionResponseDto
     ) {
         /**
          * 로그인한 유저만 본인의 게시글 수정 가능
          */
-        postService.validateOwner(postId, userId);
+        postService.validateOwner(postId, sessionResponseDto.getUserId());
         PostResponseDto responseDto = postService.updatePost(postId, requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
@@ -67,11 +61,11 @@ public class PostController implements PostControllerInterface {
     @Transactional
     public ResponseEntity<Void> deletePost(
             @PathVariable Long postId,
-            @SessionAttribute(name = Const.LOGIN_USER) Long userId
+            @SessionAttribute(name = "loginUser") SessionResponseDto sessionResponseDto
     ) {
 
         // User 테이블의 PK가 userId로 지정되어 있고 Getter가 있어야 함(통합 시 체크포인트)
-        postService.validateOwner(postId, userId);
+        postService.validateOwner(postId, sessionResponseDto.getUserId());
         postService.delete(postId);
 
         return new ResponseEntity<>(HttpStatus.OK);
