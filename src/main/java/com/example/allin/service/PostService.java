@@ -3,10 +3,12 @@ package com.example.allin.service;
 import com.example.allin.dto.PostRequestDto;
 import com.example.allin.dto.PostResponseDto;
 import com.example.allin.entity.Post;
+import com.example.allin.entity.User;
 import com.example.allin.exception.CustomException;
 import com.example.allin.exception.ErrorCode;
 import com.example.allin.exception.PostCustomException;
 import com.example.allin.repository.PostRepository;
+import com.example.allin.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,7 +34,8 @@ public class PostService implements PostServiceInterface {
     @Transactional
     @Override
     public PostResponseDto createPost(PostRequestDto requestDto, Long userId) {
-        User findUser = userRepository.findByIdOrElseThrow(userId);
+        User findUser = userRepository.findById(userId)
+                .orElseThrow(() -> new PostCustomException(USER_NOT_FOUND));
         Post savedPost = postRepository.save(new Post(requestDto, findUser));
         return new PostResponseDto(savedPost);
     }
@@ -69,7 +72,7 @@ public class PostService implements PostServiceInterface {
     public List<PostResponseDto> findAllPostByUser(Long userId) {
         //userId 존재 여부 확인
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new PostCustomException(USER_NOT_FOUND)); // UserCustomException(USER_NOT_FOUND)가 정의되어 있다고 가정
+                .orElseThrow(() -> new PostCustomException(USER_NOT_FOUND));
 
         List<Post> postList = postRepository.findAllByUser_Id(userId);
         return postList.stream()
@@ -100,7 +103,7 @@ public class PostService implements PostServiceInterface {
     @Override
     public void validateOwner(Long postId, Long currentUserId) {
         Post findPost = postRepository.findByIdOrElseThrow(postId);
-        if (!findPost.getUser().getUserId().equals(currentUserId)) {
+        if (!findPost.getUser().getId().equals(currentUserId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "수정 권한이 없습니다.");
         }
 

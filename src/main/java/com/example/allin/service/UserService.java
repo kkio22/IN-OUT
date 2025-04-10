@@ -1,6 +1,7 @@
 package com.example.allin.service;
 
 import com.example.allin.config.PasswordEncoder;
+import com.example.allin.dto.SessionResponseDto;
 import com.example.allin.dto.UserResponseDto;
 import com.example.allin.entity.User;
 import com.example.allin.exception.ErrorCode;

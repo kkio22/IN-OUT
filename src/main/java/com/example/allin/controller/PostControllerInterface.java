@@ -2,6 +2,7 @@ package com.example.allin.controller;
 
 import com.example.allin.dto.PostRequestDto;
 import com.example.allin.dto.PostResponseDto;
+import com.example.allin.dto.SessionResponseDto;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
