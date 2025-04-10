@@ -20,5 +20,7 @@ public class ErrorResponse {
 
     private String code; //에러 코드
 
+    private String path;
+
     private final LocalDateTime timestamp = LocalDateTime.now(); //에러 발생 시간
 }
