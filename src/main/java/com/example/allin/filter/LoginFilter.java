@@ -86,6 +86,4 @@ public class LoginFilter implements Filter {
                 return !PatternMatchUtils.simpleMatch(EXCLUDED_URLS, requestURI);
     }
 
-
-
 }
