@@ -1,6 +1,7 @@
 package com.example.allin.controller;
 
 import com.example.allin.dto.*;
+import com.example.allin.service.PostService;
 import com.example.allin.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -11,12 +12,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
+    private final PostService postService;
 
     @PostMapping
     public ResponseEntity<UserResponseDto> save(@Valid @RequestBody UserRequestDto requestDto) {
@@ -33,6 +37,12 @@ public class UserController {
     public ResponseEntity<UserResponseDto> findById(@PathVariable Long userId) {
         return new ResponseEntity<>(userService.findById(userId), HttpStatus.OK);
     }
+
+    @GetMapping("/{userId}/posts}")
+    public ResponseEntity<List<PostResponseDto>> findByPost(@PathVariable Long userId){
+        return new ResponseEntity<>(postService.findAllPostByUser(userId) , HttpStatus.OK);
+    }
+
 
     @PatchMapping("/{userId}")
     public ResponseEntity<String> updatePassword(

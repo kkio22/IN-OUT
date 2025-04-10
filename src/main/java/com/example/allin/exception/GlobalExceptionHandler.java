@@ -2,7 +2,6 @@ package com.example.allin.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -158,5 +157,49 @@ public class GlobalExceptionHandler {
                 .build();
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
     }
+
+    @ExceptionHandler(CommentLikeNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlerCommentPostNotFoundException(CommentLikeNotFoundException e, HttpServletRequest httpServletRequest) {
+        log.error("CommentLikeNotFoundException : {}", e.getMessage());
+        ErrorCode errorCode = e.getErrorCode();
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(errorCode.getStatus())
+                .error(errorCode.getError())
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .path(httpServletRequest.getRequestURI())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(CommentUserNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlerCommentUserNotFoundException(CommentUserNotFoundException e, HttpServletRequest httpServletRequest) {
+        log.error("CommentUserNotFoundException : {}", e.getMessage());
+        ErrorCode errorCode = e.getErrorCode();
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(errorCode.getStatus())
+                .error(errorCode.getError())
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .path(httpServletRequest.getRequestURI())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlerCommentPasswordNotFoundException(CommentNotFoundException e, HttpServletRequest httpServletRequest) {
+        log.error("CommentNotFoundException : {}", e.getMessage());
+        ErrorCode errorCode = e.getErrorCode();
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(errorCode.getStatus())
+                .error(errorCode.getError())
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .path(httpServletRequest.getRequestURI())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+
 
 }

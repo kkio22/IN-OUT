@@ -17,7 +17,7 @@ public class User extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String user;
+    private String username;
 
     @Column(nullable = false, unique = true)//사용자 아이디 중복 이게 걸러줌
     private String email;
@@ -35,7 +35,7 @@ public class User extends BaseEntity {
     }
 
     public User(String username, String email, String password){
-        this.user=username;
+        this.username=username;
         this.email=email;
         this.password=password;
 
@@ -48,4 +48,7 @@ public class User extends BaseEntity {
     public void softDelete(){
         this.deletedAt= LocalDateTime.now();
     }
+
 }
+
+

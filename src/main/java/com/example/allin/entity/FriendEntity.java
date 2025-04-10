@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -25,6 +27,7 @@ public class FriendEntity extends BaseEntity{ // BaseEntity 상속.
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private FriendStatus status;
+
 
     // createdAt, updateAt 은 "BaseEntity"에서 상속됨.
     public void confirm(){

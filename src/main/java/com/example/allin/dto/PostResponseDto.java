@@ -19,8 +19,8 @@ public class PostResponseDto {
     private boolean isLiked; // 좋아요 여부
 
     // User 테이블에 username이 user로 지정되어 있음
-    public PostResponseDto(Post post, boolean isLiked) {
-        this.userName = post.getUser().getUser();
+    public PostResponseDto(Post post) {
+        this.userName = post.getUser().getUsername();
         this.title = post.getTitle();
         this.postContent = post.getPostContent();
         this.createdAt = post.getCreatedAt();
@@ -31,6 +31,5 @@ public class PostResponseDto {
     }
 
 
-    public PostResponseDto(Post post) {
-    }
+
 }

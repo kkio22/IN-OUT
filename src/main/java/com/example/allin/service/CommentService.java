@@ -2,85 +2,85 @@ package com.example.allin.service;
 
 import com.example.allin.dto.*;
 import com.example.allin.entity.*;
+import com.example.allin.exception.CommentLikeNotFoundException;
+import com.example.allin.exception.CommentNotFoundException;
+import com.example.allin.exception.ErrorCode;
 import com.example.allin.repository.*;
-import com.example.allin.exception.NotFoundException;
+import com.example.allin.exception.CommentUserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
 public class CommentService {
 
-    private final CommentRepository commentRepo;
-    private final PostRepository postRepo;
-    private final UserRepository userRepo;
+    private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
+    private final CommentLikeRepository commentLikeRepository;
 
-    public CommentResponseDto create(Long postId, String username, CommentRequestDto dto) {
+    public CommentResponseDto create(CommentRequestDto dto) {
         Comment comment = Comment.builder()
-                .user(findUser(username))
-                .post(findPost(postId))
                 .commentContent(dto.commentContent())
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+                .likeCount(0)
                 .build();
-        commentRepo.save(comment);
+        commentRepository.save(comment);
         return toDto(comment);
     }
 
-    public CommentResponseDto get(Long id) {
-        return toDto(findComment(id));
+    public CommentResponseDto read(Long id) {
+        return toDto(find(id));
     }
 
-    public CommentResponseDto update(Long id, String username, CommentRequestDto dto) {
-        Comment comment = findComment(id);
-        validate(comment, username);
+    public CommentResponseDto update(Long id, CommentRequestDto dto) {
+        Comment comment = find(id);
         comment.update(dto.commentContent());
         return toDto(comment);
     }
 
-    public String delete(Long id, String username) {
-        Comment comment = findComment(id);
-        validate(comment, username);
-        commentRepo.delete(comment);
-        return "댓글이 삭제되었습니다.";
+    public void delete(Long id) {
+        commentRepository.delete(find(id));
     }
 
-    public String likeComment(Long commentId) {
-        Comment comment = findComment(commentId);
+    public String like(Long id, UserDetails userDetails) {
+        Comment comment = find(id);
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new CommentUserNotFoundException(ErrorCode.COMMENT_USER_NOT_FOUND));
+
+        if (commentLikeRepository.findByUserAndComment(user, comment).isPresent()) {
+            return "이미 좋아요한 댓글입니다.";
+        }
+
+        commentLikeRepository.save(CommentLike.builder().user(user).comment(comment).build());
         comment.like();
-        commentRepo.save(comment);
-        return "좋아요";
+        commentRepository.save(comment);
+        return "좋아요!";
     }
 
-    public String unlikeComment(Long commentId) {
-        Comment comment = findComment(commentId);
+    public String unlike(Long id, UserDetails userDetails) {
+        Comment comment = find(id);
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new CommentUserNotFoundException(ErrorCode.COMMENT_USER_NOT_FOUND));
+
+        CommentLike like = commentLikeRepository.findByUserAndComment(user, comment)
+                .orElseThrow(() -> new CommentLikeNotFoundException(ErrorCode.COMMENT_LIKE_NOT_FOUND));
+
+        commentLikeRepository.delete(like);
         comment.unlike();
-        commentRepo.save(comment);
+        commentRepository.save(comment);
         return "좋아요 취소";
     }
 
-    private User findUser(String username) {
-        return userRepo.findByUserName(username).orElseThrow(() -> new NotFoundException("사용자 없음"));
-    }
-
-    private Post findPost(Long postId) {
-        return postRepo.findById(postId).orElseThrow(() -> new NotFoundException("게시글 없음"));
-    }
-
-    private Comment findComment(Long id) {
-        return commentRepo.findById(id).orElseThrow(() -> new NotFoundException("댓글 없음"));
-    }
-
-    private void validate(Comment comment, String username) {
-        boolean isWriter = comment.getUser().getUserName().equals(username);
-        boolean isPostOwner = comment.getPost().getUser().getUserName().equals(username);
-        if (!isWriter && !isPostOwner)
-            throw new SecurityException("권한 없음");
+    private Comment find(Long id) {
+        return commentRepository.findById(id)
+                .orElseThrow(() -> new CommentNotFoundException(ErrorCode.COMMENT_NOT_FOUND));
     }
 
     private CommentResponseDto toDto(Comment comment) {
-        return new CommentResponseDto(comment.getUser().getUserName(), comment.getCommentContent());
+        return new CommentResponseDto(
+                comment.getUser().getUsername(),
+                comment.getCommentContent(),
+                comment.getLikeCount()
+        );
     }
 }

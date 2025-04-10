@@ -2,13 +2,14 @@ package com.example.allin.dto;
 
 import com.example.allin.entity.FriendEntity;
 import com.example.allin.entity.FriendStatus;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Builder
+@AllArgsConstructor
 public class FriendResponseDto {
     private Long friendID;
     private Long fromUserId;
@@ -16,11 +17,11 @@ public class FriendResponseDto {
     private FriendStatus status;
     private LocalDateTime createdAt;
 
-    public FriendResponseDto(FriendEntity friendEntity){
+    public FriendResponseDto(FriendEntity friendEntity) {
         this.friendID = friendEntity.getFriendId();
         this.fromUserId = friendEntity.getFromUserId();
         this.toUserId = friendEntity.getToUserId();
         this.status = friendEntity.getStatus();
-        this.createdAt = friendEntity.getCreatedAt();
+        this.createdAt = LocalDateTime.now();
     }
 }

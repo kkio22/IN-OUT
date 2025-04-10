@@ -32,14 +32,14 @@ public class UserService {
 
         User saveUser = userRepository.save(user);
 
-        return new UserResponseDto(saveUser.getId(), saveUser.getUser());
+        return new UserResponseDto(saveUser.getId(), saveUser.getUsername());
     }
 
     @Transactional
     public UserResponseDto findById(Long userId) {
         User findId = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
 
-        return new UserResponseDto(findId.getId(), findId.getUser());
+        return new UserResponseDto(findId.getId(), findId.getUsername());
     }
 
     @Transactional
@@ -63,7 +63,7 @@ public class UserService {
     public void deletePassword(Long userId, String password, SessionResponseDto sessionResponseDto) {
         User findPassword = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
 
-        if (!findPassword.getEmail().equals(sessionResponseDto.)) {
+        if (!findPassword.getEmail().equals(sessionResponseDto.getEmail())) {
             throw new UserIdMismatchException(ErrorCode.INVALID_INPUT_ID);
         }
         if (!passwordEncoder.matches(password, findPassword.getPassword())) {

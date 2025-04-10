@@ -26,7 +26,12 @@ public enum ErrorCode {
 
     // Post
     POST_NOT_FOUND(401, "BAD_REQUEST", "P001", "게시물이 존재하지 않습니다."),
-    USER_NOT_FOUND(401, "BAD_REQUEST", "P002", "유저가 존재하지 않습니다.");
+    USER_NOT_FOUND(401, "BAD_REQUEST", "P002", "유저가 존재하지 않습니다."),
+
+    //comment
+    COMMENT_USER_NOT_FOUND(400, "BAD_REQUEST", "C001", "사용자가 없습니다."),
+    COMMENT_LIKE_NOT_FOUND(400, "BAD_REQUEST", "C002", "좋아요 기록이 없습니다."),
+    COMMENT_NOT_FOUND(400, "BAD_REQUEST", "C003", "댓글이 없습니다.");
 
     private final int status; //에러 상태 번호
     private final String error; // 에러 원인

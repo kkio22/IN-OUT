@@ -3,12 +3,10 @@ package com.example.allin.exception;
 import lombok.Getter;
 
 @Getter
-public class FriendNotFoundException extends RuntimeException {
-
-    private final ErrorCode errorCode;
-
+public class FriendNotFoundException extends CustomException {
     public FriendNotFoundException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+        super(errorCode);
     }
 }
+
+
