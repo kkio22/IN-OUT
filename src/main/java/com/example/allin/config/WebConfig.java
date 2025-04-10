@@ -24,7 +24,7 @@ public class WebConfig implements WebMvcConfigurer {
         filterRegistrationBean.setFilter(new LoginFilter());
 
         // 몇번째로 실행해줄지 정하기
-        filterRegistrationBean.setOrder(1);
+         filterRegistrationBean.setOrder(1);
 
         // 모든 URL은 이 필터를 가져가야해라고 해주기
         filterRegistrationBean.addUrlPatterns("/*");
