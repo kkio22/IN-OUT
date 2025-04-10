@@ -16,9 +16,9 @@ public class PostResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // User 테이블에 userName 컬럼이 있어야 함.
+    // User 테이블에 username이 user로 지정되어 있음
     public PostResponseDto(Post post) {
-        this.userName = post.getUser().getUserName();
+        this.userName = post.getUser().getUser();
         this.title = post.getTitle();
         this.postContent = post.getPostContent();
         this.createdAt = post.getCreatedAt();

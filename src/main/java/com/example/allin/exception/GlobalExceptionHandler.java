@@ -145,4 +145,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
     }
 
+    @ExceptionHandler(PostCustomException.class)
+    public ResponseEntity<ErrorResponse> handlerPostCustomException(PostCustomException e, HttpServletRequest httpServletRequest) {
+        log.error("PostCustomException : {}", e.getMessage());
+        ErrorCode errorCode = e.getErrorCode();
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(errorCode.getStatus())
+                .error(errorCode.getError())
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .path(httpServletRequest.getRequestURI())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
 }

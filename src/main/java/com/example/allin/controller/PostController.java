@@ -2,6 +2,7 @@ package com.example.allin.controller;
 
 import com.example.allin.dto.PostRequestDto;
 import com.example.allin.dto.PostResponseDto;
+import com.example.allin.dto.SessionResponseDto;
 import com.example.allin.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,16 +19,18 @@ import java.util.List;
 public class PostController implements PostControllerInterface {
     private final PostService postService;
 
+    // 게시물 생성
     @PostMapping
     public ResponseEntity<PostResponseDto> createPost(
             @Validated @RequestBody PostRequestDto requestDto,
             @SessionAttribute(name = "loginUser") SessionResponseDto sessionResponseDto
             ) {
-        PostResponseDto responseDto = postService.createPost(requestDto, sessionResponseDto.getUserId());
+        PostResponseDto responseDto = postService.createPost(requestDto, sessionResponseDto.getId());
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     // 여기 예외처리 필요
+    // 게시물 전체 조회(페이지네이션)
     @GetMapping
     public ResponseEntity<List<PostResponseDto>> findPostsByPage(
             @RequestParam(defaultValue = "1") Long offset,
@@ -37,12 +40,14 @@ public class PostController implements PostControllerInterface {
         return new ResponseEntity<>(responseDtoList, HttpStatus.OK);
     }
 
+    // 게시물 개별 조회(게시물 id)
     @GetMapping("/{postId}")
     public ResponseEntity<PostResponseDto> findPostById(Long postId) {
         PostResponseDto responseDto = postService.findById(postId);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    // 게시물 개별 수정(게시물 id)
     @PatchMapping("/{postId}")
     public ResponseEntity<PostResponseDto> updatePost(
             @PathVariable Long postId,
@@ -52,11 +57,12 @@ public class PostController implements PostControllerInterface {
         /**
          * 로그인한 유저만 본인의 게시글 수정 가능
          */
-        postService.validateOwner(postId, sessionResponseDto.getUserId());
+        postService.validateOwner(postId, sessionResponseDto.getId());
         PostResponseDto responseDto = postService.updatePost(postId, requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    // 게시물 개별 삭제(게시물 id)
     @DeleteMapping("/{postId}")
     @Transactional
     public ResponseEntity<Void> deletePost(
@@ -65,11 +71,17 @@ public class PostController implements PostControllerInterface {
     ) {
 
         // User 테이블의 PK가 userId로 지정되어 있고 Getter가 있어야 함(통합 시 체크포인트)
-        postService.validateOwner(postId, sessionResponseDto.getUserId());
+        postService.validateOwner(postId, sessionResponseDto.getId());
         postService.delete(postId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // 게시물 좋아요
+    //@PatchMapping("/{postId}/like")
+
+
+    // 게시물 좋아요 취소
+    //@PostMapping("/{postId}/unlike")
 
 }
