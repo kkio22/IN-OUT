@@ -17,13 +17,13 @@ import static com.example.allin.exception.ErrorCode.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
-public class PostLikeService {
+public class PostLikeService implements PostLikeServiceInterface{
     private final PostRepository postRepository;
     private final PostLikeRepository postLikeRepository;
     private final UserRepository userRepository;
 
 
-    public void like(Long postId, Long userId) {
+    public void toggleLike(Long postId, Long userId) {
         Optional<PostLike> postLike = postLikeRepository.findByPost_PostIdAndUser_Id(postId, userId);
 
         if (postLike.isPresent()) {
@@ -36,5 +36,15 @@ public class PostLikeService {
                     .orElseThrow(()-> new PostCustomException(USER_NOT_FOUND));
             postLikeRepository.save(new PostLike(post, user));
         }
+    }
+
+    @Override
+    public Long countLikes(Long postId) {
+        return postLikeRepository.countAllByPost_PostId(postId);
+    }
+
+    @Override
+    public boolean isLiked(Long postId, Long userId) {
+        return postLikeRepository.existsByPost_PostIdAndUser_id(postId, userId);
     }
 }
