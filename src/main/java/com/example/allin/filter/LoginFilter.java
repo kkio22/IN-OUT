@@ -3,6 +3,7 @@ package com.example.allin.filter;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.PatternMatchUtils;
@@ -18,6 +19,7 @@ import java.io.IOException;
   2. 이후에 들어올 때 유효성 검사
  */
 @Component
+@Slf4j
 public class LoginFilter implements Filter {
 
     /*
@@ -47,6 +49,7 @@ public class LoginFilter implements Filter {
                 비교군을 가져와서 로그인을 할지 말지 판별
                  */
                 String requestURI = httpServletRequest.getRequestURI();
+                log.info("Request URI: {}", requestURI);
 
                 /*
                 로그인 했는지 검증하기
