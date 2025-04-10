@@ -32,4 +32,61 @@ public class GlobalExceptionHandler {
 
 
     }
+
+    @ExceptionHandler(FriendNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlerFriendNotFoundException(FriendNotFoundException e, HttpServletRequest httpServletRequest) {
+        log.error("FriendNotFoundException : {}", e.getMessage());
+        ErrorCode errorCode = e.getErrorCode();
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(errorCode.getStatus())
+                .error(errorCode.getError())
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .path(httpServletRequest.getRequestURI())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(FriendRequestSentException.class)
+    public ResponseEntity<ErrorResponse> handleFriendRequestSentException(FriendRequestSentException e, HttpServletRequest httpServletRequest) {
+        log.error("FriendRequestSentException : {}", e.getMessage());
+        ErrorCode errorCode = e.getErrorCode();
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(errorCode.getStatus())
+                .error(errorCode.getError())
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .path(httpServletRequest.getRequestURI())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(FriendInvalidException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidFriendException(FriendInvalidException e, HttpServletRequest httpServletRequest) {
+        log.error("InvalidFriendException : {}", e.getMessage());
+        ErrorCode errorCode = e.getErrorCode();
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(errorCode.getStatus())
+                .error(errorCode.getError())
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .path(httpServletRequest.getRequestURI())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(FriendUnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorizedFriendException(FriendUnauthorizedException e, HttpServletRequest httpServletRequest) {
+        log.error("FriendUnauthorizedException : {}", e.getMessage());
+        ErrorCode errorCode = e.getErrorCode();
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(errorCode.getStatus())
+                .error(errorCode.getError())
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .path(httpServletRequest.getRequestURI())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
 }
