@@ -31,6 +31,16 @@ public class Post extends BaseEntity{
      * createAt / modifiedAt은 BaseEntity 상속
      */
 
+    private Long likeCount = 0L; // 좋아요 수 캐싱
+
+    public void incrementLike() {
+        this.likeCount++;
+    }
+
+    public void decrementLike() {
+        this.likeCount--;
+    }
+
     //기본생성자
     public Post(){
     }
