@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
         log.error("MethodArgumentNotValidException :{}", e.getMessage()); //내부 디버그용 에러 메세지
         ErrorCode errorCode = ErrorCode.INVALID_INPUT_VALUE;// errorCode에 INVALID_INPUT_VALUE 저장
         String errorMessage = e.getBindingResult().getFieldErrors() != null ?
-                e.getBindingResult().getFieldError().getDefaultMessage() : errorCode.getMessage();//이거 내가 valid에 있는 message 꺼내기 위해 작성
+                e.getBindingResult().getFieldError().getDefaultMessage() : errorCode.getMessage();
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .status(errorCode.getStatus())
                 .error(errorCode.getError())
@@ -28,6 +28,20 @@ public class GlobalExceptionHandler {
                 .build();
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
 
+    }
+
+    @ExceptionHandler(FriendNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlerFriendNotFoundException(FriendNotFoundException e, HttpServletRequest httpServletRequest) {
+        log.error("FriendNotFoundException : {}", e.getMessage());
+        ErrorCode errorCode = e.getErrorCode();
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(errorCode.getStatus())
+                .error(errorCode.getError())
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .path(httpServletRequest.getRequestURI())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
     }
 
     @ExceptionHandler(PasswordMismatchException.class)
@@ -72,6 +86,48 @@ public class GlobalExceptionHandler {
                 .build();
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
 
+    }
+
+    @ExceptionHandler(FriendRequestSentException.class)
+    public ResponseEntity<ErrorResponse> handleFriendRequestSentException(FriendRequestSentException e, HttpServletRequest httpServletRequest) {
+        log.error("FriendRequestSentException : {}", e.getMessage());
+        ErrorCode errorCode = e.getErrorCode();
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(errorCode.getStatus())
+                .error(errorCode.getError())
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .path(httpServletRequest.getRequestURI())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(FriendInvalidException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidFriendException(FriendInvalidException e, HttpServletRequest httpServletRequest) {
+        log.error("InvalidFriendException : {}", e.getMessage());
+        ErrorCode errorCode = e.getErrorCode();
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(errorCode.getStatus())
+                .error(errorCode.getError())
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .path(httpServletRequest.getRequestURI())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(FriendUnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorizedFriendException(FriendUnauthorizedException e, HttpServletRequest httpServletRequest) {
+        log.error("FriendUnauthorizedException : {}", e.getMessage());
+        ErrorCode errorCode = e.getErrorCode();
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(errorCode.getStatus())
+                .error(errorCode.getError())
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .path(httpServletRequest.getRequestURI())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
     }
 
 
