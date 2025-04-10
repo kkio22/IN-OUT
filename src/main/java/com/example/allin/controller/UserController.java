@@ -1,9 +1,6 @@
 package com.example.allin.controller;
 
-import com.example.allin.dto.DeletePasswordRequestDto;
-import com.example.allin.dto.PasswordRequestDto;
-import com.example.allin.dto.UserRequestDto;
-import com.example.allin.dto.UserResponseDto;
+import com.example.allin.dto.*;
 import com.example.allin.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -36,6 +33,10 @@ public class UserController {
     public ResponseEntity<UserResponseDto> findById(@PathVariable Long userId) {
         return new ResponseEntity<>(userService.findById(userId), HttpStatus.OK);
     }
+
+    @GetMapping("/{userId}/posts}")
+    public
+
 
     @PatchMapping("/{userId}")
     public ResponseEntity<String> updatePassword(

@@ -1,6 +1,7 @@
 package com.example.allin.service;
 
 import com.example.allin.config.PasswordEncoder;
+import com.example.allin.dto.SessionResponseDto;
 import com.example.allin.dto.UserResponseDto;
 import com.example.allin.entity.User;
 import com.example.allin.exception.ErrorCode;
@@ -62,7 +63,7 @@ public class UserService {
     public void deletePassword(Long userId, String password, SessionResponseDto sessionResponseDto) {
         User findPassword = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
 
-        if (!findPassword.getEmail().equals(sessionResponseDto.)) {
+        if (!findPassword.getEmail().equals(sessionResponseDto.getEmail())) {
             throw new UserIdMismatchException(ErrorCode.INVALID_INPUT_ID);
         }
         if (!passwordEncoder.matches(password, findPassword.getPassword())) {
