@@ -1,7 +1,7 @@
 package com.example.allin.filter;
 
 import com.example.allin.exception.ErrorCode;
-import com.example.allin.exception.FriendCustomException;
+import com.example.allin.exception.FriendUnauthorizedException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,7 +26,7 @@ public class FriendFilter implements Filter {
                 httpRequest.getSession(false).getAttribute("userId") == null) {
 
             log.warn("Unauthorized access attempt to {}", requestURI);
-            throw new FriendCustomException(ErrorCode.UNAUTHORIZED);
+            throw new FriendUnauthorizedException(ErrorCode.UNAUTHORIZED);
         }
 
         // 세션이 유효하면 다음 필터로 전달

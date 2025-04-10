@@ -5,7 +5,9 @@ import com.example.allin.dto.FriendResponseDto;
 import com.example.allin.entity.FriendEntity;
 import com.example.allin.entity.FriendStatus;
 import com.example.allin.exception.ErrorCode;
-import com.example.allin.exception.FriendCustomException;
+import com.example.allin.exception.FriendInvalidException;
+import com.example.allin.exception.FriendNotFoundException;
+import com.example.allin.exception.FriendRequestSentException;
 import com.example.allin.repository.FriendRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,7 @@ public class FriendService {
         // 중복 확인, repository의 findByFromUserIdAndToUserId 사용.
         friendRepository.findByFromUserIdAndToUserId(fromUserId, dto.getToUserId())
                 .ifPresent(friendEntity -> {
-                    throw new FriendCustomException(ErrorCode.FRIEND_REQUEST_SENT);
+                    throw new FriendRequestSentException(ErrorCode.FRIEND_REQUEST_SENT);
                 });
 
         // 새로운 친구 요청
@@ -44,7 +46,7 @@ public class FriendService {
     @Transactional
     public String handleRequest(Long friendId, String action){
         FriendEntity friendEntity = friendRepository.findById(friendId)
-                .orElseThrow(() -> new FriendCustomException(ErrorCode.FRIEND_NOT_FOUND));
+                .orElseThrow(() -> new FriendNotFoundException(ErrorCode.FRIEND_NOT_FOUND));
 
         switch (action.toUpperCase()){
             case "CONFIRM":
@@ -54,14 +56,14 @@ public class FriendService {
                 friendEntity.reject();
                 return "친구 요청을 거절했습니다.";
             default:
-                throw new FriendCustomException(ErrorCode.INVALID_FRIEND);
+                throw new FriendInvalidException(ErrorCode.INVALID_FRIEND);
         }
     }
     // 친구 삭제(deleteFriend)
     @Transactional
     public void deleteFriend(Long friendId){
         FriendEntity friendEntity = friendRepository.findById(friendId)
-                .orElseThrow(()-> new FriendCustomException(ErrorCode.FRIEND_NOT_FOUND));
+                .orElseThrow(()-> new FriendNotFoundException(ErrorCode.FRIEND_NOT_FOUND));
         friendRepository.delete(friendEntity);
     }
 

@@ -1,10 +1,13 @@
 package com.example.allin.exception;
 
-public class FriendCustomException extends RuntimeException {
+import lombok.Getter;
+
+@Getter
+public class FriendUnauthorizedException extends RuntimeException {
 
     private final ErrorCode errorCode;
 
-    public FriendCustomException(ErrorCode errorCode) {
+    public FriendUnauthorizedException(ErrorCode errorCode) {
         super(errorCode.getMessage());
         this.errorCode = errorCode;
     }
