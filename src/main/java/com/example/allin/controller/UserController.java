@@ -38,13 +38,13 @@ public class UserController {
         return new ResponseEntity<>(userService.findById(userId), HttpStatus.OK);
     }
 
-    @GetMapping("/{userId}/posts}")
+    @GetMapping("/{userId}/posts")
     public ResponseEntity<List<PostResponseDto>> findByPost(@PathVariable Long userId){
         return new ResponseEntity<>(postService.findAllPostByUser(userId) , HttpStatus.OK);
     }
 
 
-    @PatchMapping("/{userId}")
+    @PatchMapping("/{userId}/password")
     public ResponseEntity<String> updatePassword(
             @PathVariable Long userId,
             @Valid @RequestBody PasswordRequestDto requestDto
