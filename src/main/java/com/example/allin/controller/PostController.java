@@ -6,10 +6,13 @@ import com.example.allin.dto.PostResponseDto;
 import com.example.allin.service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -18,30 +21,19 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor // 생성자 자동 생성/주입(DI)
 @RequestMapping("/posts/")
-public class PostController {
+public class PostController implements PostControllerInterface {
     private final PostService postService;
 
     @PostMapping
     public ResponseEntity<PostResponseDto> createPost(
-            @RequestBody PostRequestDto requestDto,
-            HttpServletRequest sevletRequest
+            @Validated @RequestBody PostRequestDto requestDto,
+            @SessionAttribute(name = Const.LOGIN_USER) SessionResponseDto sessionResponseDto
             ) {
-        HttpSession session = sevletRequest.getSession();
-        UserResponseDto loginUser = (UserResponseDto) session.getAttribute(Const.LOGIN_USER);
-
-        // 미 로그인 시 생성 권한 미부여
-        if (loginUser == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인 후 이용해주세요.");
-        }
-
-        /**
-         * 로그인한 유저(세선에서 받아옴)의 userId로 post 생성
-         * User의 PK가 UserId로 설정되었는지 확인 필요. 그냥 id이면 에러날 수 있음
-         */
-        PostResponseDto responseDto = postService.createPost(requestDto, loginUser.getUserId());
+        PostResponseDto responseDto = postService.createPost(requestDto, sessionResponseDto.getUserId());
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
+    // 여기 예외처리 필요
     @GetMapping
     public ResponseEntity<List<PostResponseDto>> findPostsByPage(
             @RequestParam(defaultValue = "1") Long offset,
@@ -60,32 +52,29 @@ public class PostController {
     @PatchMapping("/{postId}")
     public ResponseEntity<PostResponseDto> updatePost(
             @PathVariable Long postId,
-            @RequestBody PostRequestDto requestDto,
-            HttpServletRequest servletRequest
+            @Validated @RequestBody PostRequestDto requestDto,
+            @SessionAttribute(name = Const.LOGIN_USER) Long userId
     ) {
         /**
          * 로그인한 유저만 본인의 게시글 수정 가능
          */
-        HttpSession session = servletRequest.getSession();
-        UserResponseDto loginUser = (UserResponseDto) session.getAttribute(Const.LOGIN_USER);
-
-        postService.validateOwner(postId, loginUser.getUserId());
+        postService.validateOwner(postId, userId);
         PostResponseDto responseDto = postService.updatePost(postId, requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{postId}")
+    @Transactional
     public ResponseEntity<Void> deletePost(
             @PathVariable Long postId,
-            HttpServletRequest request
+            @SessionAttribute(name = Const.LOGIN_USER) Long userId
     ) {
-        HttpSession session = request.getSession();
-        UserResponseDto loginUser = (UserResponseDto) session.getAttribute(Const.LOGIN_USER);
+
         // User 테이블의 PK가 userId로 지정되어 있고 Getter가 있어야 함(통합 시 체크포인트)
-        postService.validateOwner(postId, loginUser.getUserId());
+        postService.validateOwner(postId, userId);
         postService.delete(postId);
 
-        return new ResponseEntity<>(HttpStatus.Ok);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
