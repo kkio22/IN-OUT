@@ -161,7 +161,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CommentLikeNotFoundException.class)
     public ResponseEntity<ErrorResponse> handlerCommentPostNotFoundException(CommentLikeNotFoundException e, HttpServletRequest httpServletRequest) {
-        log.error("CommentPostNotFoundException : {}", e.getMessage());
+        log.error("CommentLikeNotFoundException : {}", e.getMessage());
         ErrorCode errorCode = e.getErrorCode();
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .status(errorCode.getStatus())
@@ -189,7 +189,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CommentNotFoundException.class)
     public ResponseEntity<ErrorResponse> handlerCommentPasswordNotFoundException(CommentNotFoundException e, HttpServletRequest httpServletRequest) {
-        log.error("CommentPasswordNotFoundException : {}", e.getMessage());
+        log.error("CommentNotFoundException : {}", e.getMessage());
         ErrorCode errorCode = e.getErrorCode();
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .status(errorCode.getStatus())
