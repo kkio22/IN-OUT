@@ -30,8 +30,8 @@ public enum ErrorCode {
 
     //comment
     COMMENT_USER_NOT_FOUND(400, "BAD_REQUEST", "C001", "사용자가 없습니다."),
-    COMMENT_POST_NOT_FOUND(400, "BAD_REQUEST", "C002", "게시물이 없습니다."),
-    COMMENT_PASSWORD_NOT_FOUND(400, "BAD_REQUEST", "C003", "비밀번호가 없습니다.");
+    COMMENT_LIKE_NOT_FOUND(400, "BAD_REQUEST", "C002", "좋아요 기록이 없습니다."),
+    COMMENT_NOT_FOUND(400, "BAD_REQUEST", "C003", "댓글이 없습니다.");
 
     private final int status; //에러 상태 번호
     private final String error; // 에러 원인
