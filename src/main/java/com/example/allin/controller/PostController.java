@@ -23,7 +23,7 @@ public class PostController implements PostControllerInterface {
     @PostMapping
     public ResponseEntity<PostResponseDto> createPost(
             @Validated @RequestBody PostRequestDto requestDto,
-            @SessionAttribute(name = "loginUser") SessionResponseDto sessionResponseDto
+            @SessionAttribute(name = "sessionResponseDto") SessionResponseDto sessionResponseDto
             ) {
         PostResponseDto responseDto = postService.createPost(requestDto, sessionResponseDto.getId());
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
@@ -42,7 +42,9 @@ public class PostController implements PostControllerInterface {
 
     // 게시물 개별 조회(게시물 id)
     @GetMapping("/{postId}")
-    public ResponseEntity<PostResponseDto> findPostById(Long postId) {
+    public ResponseEntity<PostResponseDto> findPostById(
+            @PathVariable Long postId
+    ) {
         PostResponseDto responseDto = postService.findById(postId);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
@@ -52,7 +54,7 @@ public class PostController implements PostControllerInterface {
     public ResponseEntity<PostResponseDto> updatePost(
             @PathVariable Long postId,
             @Validated @RequestBody PostRequestDto requestDto,
-            @SessionAttribute(name = "loginUser") SessionResponseDto sessionResponseDto
+            @SessionAttribute(name = "sessionResponseDto") SessionResponseDto sessionResponseDto
     ) {
         /**
          * 로그인한 유저만 본인의 게시글 수정 가능
@@ -67,7 +69,7 @@ public class PostController implements PostControllerInterface {
     @Transactional
     public ResponseEntity<Void> deletePost(
             @PathVariable Long postId,
-            @SessionAttribute(name = "loginUser") SessionResponseDto sessionResponseDto
+            @SessionAttribute(name = "sessionResponseDto") SessionResponseDto sessionResponseDto
     ) {
 
         // User 테이블의 PK가 userId로 지정되어 있고 Getter가 있어야 함(통합 시 체크포인트)
@@ -76,12 +78,5 @@ public class PostController implements PostControllerInterface {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    // 게시물 좋아요
-    //@PatchMapping("/{postId}/like")
-
-
-    // 게시물 좋아요 취소
-    //@PostMapping("/{postId}/unlike")
 
 }

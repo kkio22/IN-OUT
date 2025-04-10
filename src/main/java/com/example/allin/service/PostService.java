@@ -7,6 +7,7 @@ import com.example.allin.entity.User;
 import com.example.allin.exception.CustomException;
 import com.example.allin.exception.ErrorCode;
 import com.example.allin.exception.PostCustomException;
+import com.example.allin.repository.PostLikeRepository;
 import com.example.allin.repository.PostRepository;
 import com.example.allin.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ import static com.example.allin.exception.ErrorCode.USER_NOT_FOUND;
 public class PostService implements PostServiceInterface {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final PostLikeRepository postLikeRepository;
 
     @Transactional
     @Override
@@ -56,11 +58,17 @@ public class PostService implements PostServiceInterface {
                 .toList();
     }
 
+    /**
+     *
+     * @param postId 조회하는 postId
+     * * @return
+     */
     @Override
     public PostResponseDto findById(Long postId) {
         Post findPost = postRepository.findByIdOrElseThrow(postId);
         return new PostResponseDto(findPost);
     }
+
 
     /**
      *
