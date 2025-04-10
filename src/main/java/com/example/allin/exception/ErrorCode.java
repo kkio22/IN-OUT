@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum ErrorCode {
 
     // login
-    LOGIN_NON_AUTHORITATIVE_INFORMATION (401, "unAuthorized", "L001", "로그인 먼저 해주세요");
+    LOGIN_NON_AUTHORITATIVE_INFORMATION (401, "unAuthorized", "L001", "로그인 먼저 해주세요"),
 
     INVALID_INPUT_PASSWORD(400, "BAD_REQUEST", "U001","비밀번호가 다릅니다."),
 
@@ -22,7 +22,11 @@ public enum ErrorCode {
     FRIEND_NOT_FOUND(404, "NOT_FOUND", "F001", "친구를 찾을 수 없습니다."),
     FRIEND_REQUEST_SENT(400, "BAD_REQUEST", "F002", "이미 친구 요청을 보냈습니다."),
     INVALID_FRIEND(400, "BAD_REQUEST", "F003", "잘못된 친구 요청입니다."),
-    UNAUTHORIZED(401, "UNAUTHORIZED", "F004", "로그인이 필요합니다.");
+    UNAUTHORIZED(401, "UNAUTHORIZED", "F004", "로그인이 필요합니다."),
+
+    // Post
+    POST_NOT_FOUND(401, "BAD_REQUEST", "P001", "게시물이 존재하지 않습니다."),
+    USER_NOT_FOUND(401, "BAD_REQUEST", "P002", "유저가 존재하지 않습니다.");
 
     private final int status; //에러 상태 번호
     private final String error; // 에러 원인

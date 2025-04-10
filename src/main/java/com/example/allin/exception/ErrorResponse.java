@@ -6,7 +6,6 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-//이건 1개만 만들어야 함 (혐업할 때)
 @Getter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
