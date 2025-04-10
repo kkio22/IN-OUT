@@ -18,7 +18,7 @@ import java.io.IOException;
   1. 세션 생성하고, ID 저장
   2. 이후에 들어올 때 유효성 검사
  */
-@Component
+
 @Slf4j
 public class LoginFilter implements Filter {
 

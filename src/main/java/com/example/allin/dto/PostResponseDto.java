@@ -18,7 +18,7 @@ public class PostResponseDto {
 
     // User 테이블에 username이 user로 지정되어 있음
     public PostResponseDto(Post post) {
-        this.userName = post.getUser().getUser();
+        this.userName = post.getUser().getUsername();
         this.title = post.getTitle();
         this.postContent = post.getPostContent();
         this.createdAt = post.getCreatedAt();
