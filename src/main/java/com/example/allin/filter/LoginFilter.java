@@ -63,8 +63,12 @@ public class LoginFilter implements Filter {
 
             // "" 안에 있으면 스프링이 읽는다 -> "userId"는 user클래스에서 id 값을 찾아온다
             if (session == null || session.getAttribute("sessionResponseDto") == null) {
-
-                throw new ResponseStatusException(HttpStatus.NON_AUTHORITATIVE_INFORMATION, "로그인 먼저 해주세요.");
+                httpServletResponse.setContentType("application/json; charset=UTF-8");
+                httpServletResponse.setCharacterEncoding("UTF-8");
+                httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 또는 404 등 상황에 따라 적절히
+                httpServletResponse.getWriter().write("{\"message\": \"로그인이 필요합니다.\"}");
+                return; // 필터라면 여기서 흐름 종료 필요
+                //                throw new ResponseStatusException(HttpStatus.NON_AUTHORITATIVE_INFORMATION, "로그인 먼저 해주세요.");
             }
         }
 
