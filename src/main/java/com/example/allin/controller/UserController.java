@@ -22,7 +22,7 @@ public class UserController {
     private final UserService userService;
     private final PostService postService;
 
-    @PostMapping
+    @PostMapping("/user")
     public ResponseEntity<UserResponseDto> save(@Valid @RequestBody UserRequestDto requestDto) {
         UserResponseDto userResponseDto = userService.save(
                 requestDto.getUsername(),
