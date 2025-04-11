@@ -24,7 +24,7 @@ public class LikeController {
     }
 
     // 게시물별 좋아요 수 출력
-    @GetMapping("/post/{postId}/likes/count")
+    @GetMapping("/posts/{postId}/likes/count")
     public ResponseEntity<Long> countLikes(
             @PathVariable Long postId
     ) {
