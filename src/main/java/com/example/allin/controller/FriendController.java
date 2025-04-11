@@ -2,6 +2,7 @@ package com.example.allin.controller;
 
 import com.example.allin.dto.FriendRequestDto;
 import com.example.allin.dto.FriendResponseDto;
+import com.example.allin.dto.FriendStatusResponseDto;
 import com.example.allin.entity.FriendEntity;
 import com.example.allin.service.FriendService;
 import jakarta.validation.Valid;
@@ -30,10 +31,9 @@ public class FriendController {
     @PostMapping("/friends/{friendId}")
     public ResponseEntity<String> handleRequest(
             @PathVariable Long friendId,
-            @RequestBody String response){
-//        if(!response.equalsIgnoreCase("confirm")){
-//            throw new IllegalArgumentException("잘못된 요청입니다.");
-//        }
+            @RequestBody @Valid FriendStatusResponseDto statusDto){
+        String response = statusDto.getResponse();
+
         friendService.handleRequest(friendId, response);
         return ResponseEntity.ok("친구 요청을 수락했습니다.");
     }
