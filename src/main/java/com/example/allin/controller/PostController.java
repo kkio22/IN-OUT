@@ -67,7 +67,7 @@ public class PostController implements PostControllerInterface {
     // 게시물 개별 삭제(게시물 id)
     @DeleteMapping("/{postId}")
     @Transactional
-    public ResponseEntity<Void> deletePost(
+    public ResponseEntity<String> deletePost(
             @PathVariable Long postId,
             @SessionAttribute(name = "sessionResponseDto") SessionResponseDto sessionResponseDto
     ) {
@@ -76,7 +76,7 @@ public class PostController implements PostControllerInterface {
         postService.validateOwner(postId, sessionResponseDto.getId());
         postService.delete(postId);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("게시글이 성공적으로 삭제되었습니다.", HttpStatus.OK);
     }
 
 }
