@@ -18,8 +18,9 @@ public class CommentController {
     private final CommentService service;
 
     @PostMapping
-    public ResponseEntity<CommentResponseDto> create(@RequestBody CommentRequestDto dto) {
-        return ResponseEntity.status(201).body(service.create(dto));
+    public ResponseEntity<CommentResponseDto> create(@RequestBody CommentRequestDto dto,
+                                                     @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.status(201).body(service.create(dto, userDetails));
     }
 
     @GetMapping("/{id}")

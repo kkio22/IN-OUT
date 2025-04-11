@@ -9,5 +9,8 @@ public enum FriendStatus {
     REJECTED: 거절.
      */
 
-    WAITING, CONFIRM, REJECTED
+    WAITING,
+    CONFIRM,
+    REJECTED;
+
 }

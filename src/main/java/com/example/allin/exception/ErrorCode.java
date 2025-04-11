@@ -22,7 +22,7 @@ public enum ErrorCode {
     FRIEND_NOT_FOUND(404, "NOT_FOUND", "F001", "친구를 찾을 수 없습니다."),
     FRIEND_REQUEST_SENT(400, "BAD_REQUEST", "F002", "이미 친구 요청을 보냈습니다."),
     INVALID_FRIEND(400, "BAD_REQUEST", "F003", "잘못된 친구 요청입니다."),
-    UNAUTHORIZED(401, "UNAUTHORIZED", "F004", "로그인이 필요합니다."),
+    UNAUTHORIZED(403, "UNAUTHORIZED", "F004", "로그인이 필요합니다."),
 
     // Post
     POST_NOT_FOUND(401, "BAD_REQUEST", "P001", "게시물이 존재하지 않습니다."),
