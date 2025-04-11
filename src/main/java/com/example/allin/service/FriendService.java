@@ -55,6 +55,9 @@ public class FriendService {
             case "REJECT":
                 friendEntity.reject();
                 return "친구 요청을 거절했습니다.";
+            case "WAITING":
+                friendEntity.waiting();
+                return "친구 요청을 대기중입니다.";
             default:
                 throw new FriendInvalidException(ErrorCode.INVALID_FRIEND);
         }

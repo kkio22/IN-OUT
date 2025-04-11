@@ -21,8 +21,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 사용 안함
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll() // 회원가입/로그인 경로 허용
-                        .anyRequest().authenticated()) // 그 외 요청은 인증 필요
+                        .requestMatchers("/auth/**","/users/user","/users/login").permitAll() // 회원가입/로그인 경로 허용
+                        .anyRequest().permitAll()) // 그 외 요청은 인증 필요
                 .build();
     }
 

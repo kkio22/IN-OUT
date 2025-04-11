@@ -25,7 +25,7 @@ public class LoginService {
         User existingUser = userRepository.findByEmail(loginRequestDto.getEmail()).orElseThrow(()
                 -> new ResponseStatusException(HttpStatus.NOT_FOUND, "가입되지 않은 이메일입니다."));
 
-        if (!passwordEncoder.matches(existingUser.getPassword(), loginRequestDto.getPassword())) {
+        if (!passwordEncoder.matches(loginRequestDto.getPassword(), existingUser.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
         }
 

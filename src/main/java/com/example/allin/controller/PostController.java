@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor // 생성자 자동 생성/주입(DI)
-@RequestMapping("/posts/")
+@RequestMapping("/posts")
 public class PostController implements PostControllerInterface {
     private final PostService postService;
 

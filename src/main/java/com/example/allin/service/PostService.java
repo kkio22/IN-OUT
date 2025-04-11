@@ -7,6 +7,7 @@ import com.example.allin.entity.User;
 import com.example.allin.exception.CustomException;
 import com.example.allin.exception.ErrorCode;
 import com.example.allin.exception.PostCustomException;
+import com.example.allin.exception.UserPostException;
 import com.example.allin.repository.PostLikeRepository;
 import com.example.allin.repository.PostRepository;
 import com.example.allin.repository.UserRepository;
@@ -37,7 +38,7 @@ public class PostService implements PostServiceInterface {
     @Override
     public PostResponseDto createPost(PostRequestDto requestDto, Long userId) {
         User findUser = userRepository.findById(userId)
-                .orElseThrow(() -> new PostCustomException(USER_NOT_FOUND));
+                .orElseThrow(() -> new UserPostException(USER_NOT_FOUND));
         Post savedPost = postRepository.save(new Post(requestDto, findUser));
         return new PostResponseDto(savedPost);
     }

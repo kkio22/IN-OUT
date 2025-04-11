@@ -2,6 +2,7 @@ package com.example.allin.filter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class LoginFilter implements Filter {
     List.of : 불변 리스트 생성 메서드
     상수의 변수명은 모두 대문자로 + 언더바 -> 관례
      */
-    private static final String[] EXCLUDED_URLS = {"/users/login", "users/user"};
+    private static final String[] EXCLUDED_URLS = {"/users/login", "/users/user"};
 //    List.of("/users/login", "users/user")
 
     @Override
@@ -40,31 +41,32 @@ public class LoginFilter implements Filter {
              */
             throws IOException, ServletException {
 
-                // 다운캐스팅
-                HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        // 다운캐스팅
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 
                 /*
                 URI : 예) www.naver.com/sports -> /sports만 주는 것
                 URL : 예시에서 다 주는 것
                 비교군을 가져와서 로그인을 할지 말지 판별
                  */
-                String requestURI = httpServletRequest.getRequestURI();
-                log.info("Request URI: {}", requestURI);
+        String requestURI = httpServletRequest.getRequestURI();
+        log.info("Request URI: {}", requestURI);
 
                 /*
                 로그인 했는지 검증하기
                  */
-                if (isNotExcludedUrls(requestURI)) {
+        if (isNotExcludedUrls(requestURI)) {
 
-                    // 세션 생성
-                    HttpSession session = httpServletRequest.getSession(false);
+            // 세션 생성
+            HttpSession session = httpServletRequest.getSession(false);
 
-                    // "" 안에 있으면 스프링이 읽는다 -> "userId"는 user클래스에서 id 값을 찾아온다
-                    if (session==null || session.getAttribute("userId")==null) {
+            // "" 안에 있으면 스프링이 읽는다 -> "userId"는 user클래스에서 id 값을 찾아온다
+            if (session == null || session.getAttribute("sessionResponseDto") == null) {
 
-                        throw new ResponseStatusException(HttpStatus.NON_AUTHORITATIVE_INFORMATION, "로그인 먼저 해주세요.");
-                    }
-                }
+                throw new ResponseStatusException(HttpStatus.NON_AUTHORITATIVE_INFORMATION, "로그인 먼저 해주세요.");
+            }
+        }
 
 //                // 롣그인 안 된 상태일 경우 예외 던지고 종료
 //                if(object==null) {
@@ -75,15 +77,15 @@ public class LoginFilter implements Filter {
                 필터를 통과해서 간다
                 다음 필터가 있으면 다음 필터로 넘겨주고, 없으면 이 필터가 마지막 필터가 되고 컨트롤러를 호출한다
                  */
-                filterChain.doFilter(servletRequest, servletResponse);
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
-    private boolean isNotExcludedUrls (String requestURI) {
+    private boolean isNotExcludedUrls(String requestURI) {
                 /*
                 PatternMatchUtils : 배열 안의 값들을 하나씩 대조해보기
                 있으면 true, 없으면 false 인데 앞에 ! 붙여서 반대로 없으면 true, 있으면 false -> 있으면 실행 X
                  */
-                return !PatternMatchUtils.simpleMatch(EXCLUDED_URLS, requestURI);
+        return !PatternMatchUtils.simpleMatch(EXCLUDED_URLS, requestURI);
     }
 
 }

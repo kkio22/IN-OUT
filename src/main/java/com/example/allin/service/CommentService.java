@@ -2,11 +2,8 @@ package com.example.allin.service;
 
 import com.example.allin.dto.*;
 import com.example.allin.entity.*;
-import com.example.allin.exception.CommentLikeNotFoundException;
-import com.example.allin.exception.CommentNotFoundException;
-import com.example.allin.exception.ErrorCode;
+import com.example.allin.exception.*;
 import com.example.allin.repository.*;
-import com.example.allin.exception.CommentUserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -17,11 +14,20 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
+    private final PostRepository postRepository;
     private final CommentLikeRepository commentLikeRepository;
 
-    public CommentResponseDto create(CommentRequestDto dto) {
+    public CommentResponseDto create(CommentRequestDto dto,  UserDetails userDetails) {
+        // 사용자 조회
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new UserPostException(ErrorCode.USER_NOT_FOUND));
+
+        // 게시글 조회
+        Post post = postRepository.findById(dto.getPostId())
+                .orElseThrow(() -> new PostCustomException(ErrorCode.POST_NOT_FOUND));
+
         Comment comment = Comment.builder()
-                .commentContent(dto.commentContent())
+                .commentContent(dto.getCommentContent())
                 .likeCount(0)
                 .build();
         commentRepository.save(comment);
@@ -34,7 +40,7 @@ public class CommentService {
 
     public CommentResponseDto update(Long id, CommentRequestDto dto) {
         Comment comment = find(id);
-        comment.update(dto.commentContent());
+        comment.update(dto.getCommentContent());
         return toDto(comment);
     }
 
