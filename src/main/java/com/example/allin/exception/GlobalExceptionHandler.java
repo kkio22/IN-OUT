@@ -200,6 +200,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
     }
 
+    @ExceptionHandler(NotExistingUserException.class)
+    public ResponseEntity<ErrorResponse> handlerNotExistingUserException(NotExistingUserException e, HttpServletRequest httpServletRequest) {
+        log.error("NotExistingUserException : {}", e.getMessage());
+        ErrorCode errorCode = e.getErrorCode();
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(errorCode.getStatus())
+                .error(errorCode.getError())
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .path(httpServletRequest.getRequestURI())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
+    }
 
 
 }

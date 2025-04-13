@@ -27,28 +27,35 @@ public class User extends BaseEntity {
 
     //아무것도 안 쓰면 nullable = true
     @Column
-   private LocalDateTime deletedAt;
+    private LocalDateTime deletedAt;
+
+    @Column
+    private boolean is_deleted = false;
 
 
     public User() {
 
     }
 
-    public User(String username, String email, String password){
-        this.username=username;
-        this.email=email;
-        this.password=password;
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
 
     }
 
-    public void editPassword (String password){
-        this.password=password;
+    public void editPassword(String password) {
+        this.password = password;
     }
 
-    public void softDelete(){
-        this.deletedAt= LocalDateTime.now();
+    public void softDelete() {
+        this.is_deleted = true;
+        this.deletedAt = LocalDateTime.now();
     }
 
+    public boolean isDeleted() {
+        return is_deleted;
+    }
 }
 
 

@@ -4,10 +4,7 @@ import com.example.allin.config.PasswordEncoder;
 import com.example.allin.dto.SessionResponseDto;
 import com.example.allin.dto.UserResponseDto;
 import com.example.allin.entity.User;
-import com.example.allin.exception.ErrorCode;
-import com.example.allin.exception.InvalidPasswordException;
-import com.example.allin.exception.PasswordMismatchException;
-import com.example.allin.exception.UserIdMismatchException;
+import com.example.allin.exception.*;
 import com.example.allin.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
@@ -24,16 +21,18 @@ import org.springframework.web.server.ResponseStatusException;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PostService postService;
 
     @Transactional
     public UserResponseDto save(String username, String email, String password) {
 
-        User user = new User(username, email, passwordEncoder.encode(password));
+        User user = new User(username, email, passwordEncoder.encode(password)); //데이터 타입을 DTO -> Entity로 변경
 
-        User saveUser = userRepository.save(user);
+        User saveUser = userRepository.save(user);// user entity를 데이터 베이스에 저장
 
         return new UserResponseDto(saveUser.getId(), saveUser.getUsername());
     }
+
 
     @Transactional
     public UserResponseDto findById(Long userId) {
@@ -69,8 +68,9 @@ public class UserService {
         if (!passwordEncoder.matches(password, findPassword.getPassword())) {
             throw new PasswordMismatchException(ErrorCode.INVALID_INPUT_PASSWORD);
         }
-
+        postService.deletePostByUser(userId);
         //그 삭제 요청으로 들어오면 해당 시간 값을 넣어주는 매서드를 만들어서 값을 넣어주면 됨
         findPassword.softDelete();
+
     }
 }

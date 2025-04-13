@@ -35,6 +35,7 @@ public class CommentController {
     public String likeOrUnlikeComment(@PathVariable Long id) {
         return commentService.toggleLike(id, getMockUser());
     }
+
     @GetMapping
     public List<CommentResponseDto> getAllComments() {
         return commentService.getAllComments();

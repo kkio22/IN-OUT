@@ -69,6 +69,7 @@ public class UserController {
 
         userService.deletePassword(userId, requestDto.getPassword(),sessionResponseDto);
 
+        session.invalidate();
         return ResponseEntity.ok("회원을 삭제했습니다.");
     }
 }
