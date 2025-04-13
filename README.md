@@ -1,12 +1,24 @@
 # ▶ SNS 프로젝트 - allin◀
 
-* 프로젝트 이름이 allin인 이유 :  우리 팀원들의 MBTI가 모두 I 이기 때문에 All In 으로 프로젝트명을 지었습니다.
-
 JDK version 17
+
+## 프로젝트 소개
+
+* 팀 이름:  ALL- IN → 우리 팀원들의 MBTI가 모두 I 이기 때문에 All In 으로 프로젝트명을 지었습니다.
+  
+* SNS 이름:  IN & OUT
+  
+* 프로젝트 설명:
+    - IN & OUT이라는 새로운 SNS 플랫폼을 런칭하였다.
+    - IN & OUT은 Sparta 코딩 클럽을 참여하는 참여자들을 위한 정보 공유, 일상 공유를 위해 개발한 SNS입니다.
+  
+* 팀장: 김나현
+  
+* 팀원: 김하정, 송윤태, 김윤범, 정기백
 
 ## ✅ 목적
 
-**기본적인 SNS의 기능을 갖춘 소셜미디어 앱 만들기**
+**기본적인 SNS의 기능을 갖춘 내배캠 참여자 전용 소셜미디어 앱 만들기**
 
 * 회원가입
 
@@ -62,11 +74,3 @@ JDK version 17
 
 ### * _**User**_
 
-|     기능     | HTTP Method | Endpoint(URL) | 설명 | Request Body | Query parameter | Pathvariable | Response | 상태코드 |
-|:------------:|:-----------:|:-------------:|:----:|:------------:|:---------------:|:-------------|:---------|:--------:|
-| (필) 회원 가입 |    POST    |     /users    |  회원 가입 |         X         | { "user_name": "유저명",<br/>"task_title": "할일 제목",<br/>"task_content": "할일 내용" }         | { "schedule_id": 1,<br/>"user_name": "유저명",<br/>"task_title": "할일 제목",<br/>"task_content": "할일 내용",<br/>"created_at": 작성된 시간,<br/>"updated_at": 수정된 시간 } |  200: 정상등록   |
-| 스케줄 단건 조회  |  GET   |     /{id}     |   id (Long)   |         X         | X                                                                                      | { "schedule_id": 1,<br/>"user_name": "유저명",<br/>"task_title": 제목1,<br/>"task_content": 할 일 내용1 }                                                         |  200: 정상조회   |
-| 스케줄 수정(전체) |  PUT   |     /{id}     |   id (Long)   |         X         | { "task_title": "수정된 제목",<br/>"task_content": "수정된 내용" }                               | { "schedule_id": 1,<br/>"user_name": "유저명",<br/>"task_title": "수정된 제목",<br/>"task_content": "수정된 내용",<br/>"updated_at": 수정된 시간 }                         |  200: 정상수정   |
-|   스케줄 삭제   | DELETE |     /{id}     |   id (Long)   |         X         | X                                                                                      | { "msg": "일정 삭제 완료" }                                                                                                                                    |  200: 정상삭제   |
-
------
