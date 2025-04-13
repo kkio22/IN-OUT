@@ -79,13 +79,27 @@ JDK version 17
 
 -----
 
-### *_**Login**_
+### * _**Login**_
 
 |![image](https://github.com/user-attachments/assets/500d3d83-815d-45a7-8e87-c466dc35365e)
 |:---:|
 
 -----
 
-### *_**Post**_
+### * _**Post**_
 
-|
+|![image](https://github.com/user-attachments/assets/4c61b96f-fcff-4046-842f-0abe2514435e)
+|:---|
+
+### * _**Friend**_
+
+|![image](https://github.com/user-attachments/assets/6ed78e72-b8a9-4cac-8f03-13897dfc711f)
+|:---:|
+
+### * _**Comment**_
+
+|![image](https://github.com/user-attachments/assets/3d04385a-800d-492f-a2d7-8fd9074d79b1)
+|:---:|
+
+### * _**Like**_
+
