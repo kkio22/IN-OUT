@@ -51,6 +51,8 @@ public class PostLikeService implements PostLikeServiceInterface{
     @Override
     public boolean isLiked(Long postId, Long userId) {
         Post post = postRepository.findByIdOrElseThrow(postId); // postId 존재 여부 확인
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new PostCustomException(USER_NOT_FOUND)); // userId 존재 여부 확인
         return postLikeRepository.existsByPost_PostIdAndUser_id(postId, userId);
     }
 }
