@@ -13,7 +13,7 @@ public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
     Optional<PostLike> findByPost_PostIdAndUser_Id(Long postId, Long userId);
 
     // postId의 좋아요 수 조회
-    Long countAllByPost_PostId(Long postPostId);
+    Long countAllByPost_PostId(Long postId);
     
     // 로그인 유저의 userId로 해당 postId에 좋아요를 했는지 여부 확인
     boolean existsByPost_PostIdAndUser_id(Long postId, Long userId);
