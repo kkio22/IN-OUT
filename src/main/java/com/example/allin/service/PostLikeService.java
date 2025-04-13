@@ -10,9 +10,11 @@ import com.example.allin.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import static com.example.allin.exception.ErrorCode.POST_NOT_FOUND;
 import static com.example.allin.exception.ErrorCode.USER_NOT_FOUND;
 
 @Service
@@ -38,13 +40,17 @@ public class PostLikeService implements PostLikeServiceInterface{
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Long countLikes(Long postId) {
+        Post post = postRepository.findByIdOrElseThrow(postId); // postId 존재 여부 확인
         return postLikeRepository.countAllByPost_PostId(postId);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public boolean isLiked(Long postId, Long userId) {
+        Post post = postRepository.findByIdOrElseThrow(postId); // postId 존재 여부 확인
         return postLikeRepository.existsByPost_PostIdAndUser_id(postId, userId);
     }
 }
