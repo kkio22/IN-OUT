@@ -1,20 +1,30 @@
 # ▶ SNS 프로젝트 - allin◀
 
-JDK version 17
+* 사용 버전 : JDK version 17
+
+* 기술 스택 : Github, Git, IntelliJ, Notion,  ERD Cloud, SpringBoot
+
+* 사용 언어 : Java, JavaScript, MySql
 
 ## 프로젝트 소개
 
 * 팀 이름:  ALL- IN → 우리 팀원들의 MBTI가 모두 I 이기 때문에 All In 으로 프로젝트명을 지었습니다.
   
 * SNS 이름:  IN & OUT
+
+* 개발 기간 : 2025.04.07 ~ 2025.04.14
   
-* 프로젝트 설명:
+* 프로젝트 설명 :
+
     - IN & OUT이라는 새로운 SNS 플랫폼을 런칭하였다.
+
     - IN & OUT은 Sparta 코딩 클럽을 참여하는 참여자들을 위한 정보 공유, 일상 공유를 위해 개발한 SNS입니다.
   
 * 팀장: 김나현
   
 * 팀원: 김하정, 송윤태, 김윤범, 정기백
+
+-----
 
 ## ✅ 목적
 
@@ -68,6 +78,13 @@ JDK version 17
 
 -----
 
+## ✅ Error Code
+
+|![image](https://github.com/user-attachments/assets/8f4e6925-2254-4f2a-a3a4-68bd3e9da523)
+|:---:|
+
+-----
+
 -----
 
 ## ✅ API 명세서
@@ -91,15 +108,38 @@ JDK version 17
 |![image](https://github.com/user-attachments/assets/4c61b96f-fcff-4046-842f-0abe2514435e)
 |:---|
 
+-----
+
 ### * _**Friend**_
 
 |![image](https://github.com/user-attachments/assets/6ed78e72-b8a9-4cac-8f03-13897dfc711f)
 |:---:|
+
+-----
 
 ### * _**Comment**_
 
 |![image](https://github.com/user-attachments/assets/3d04385a-800d-492f-a2d7-8fd9074d79b1)
 |:---:|
 
-### * _**Like**_
+-----
 
+### * _**Like - 게시물 좋아요**_
+
+|![image](https://github.com/user-attachments/assets/a1d7180b-520e-4ceb-bc52-fe4042ace754)
+|:---:|
+
+-----
+
+### * _**Like - 댓글 좋아요**_
+
+|![image](https://github.com/user-attachments/assets/e53a52f6-bfa1-4875-ba24-95944f972fdf)
+|:---:|
+
+-----
+-----
+
+## ✅ ERD
+
+|![image](https://github.com/user-attachments/assets/6cf07c16-64d5-416d-81c2-ed4f8410c4b3)|
+|:---:|
