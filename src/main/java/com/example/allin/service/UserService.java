@@ -25,14 +25,16 @@ public class UserService {
     @Transactional
     public UserResponseDto save(String username, String email, String password) {
         User findEmail = userRepository.findByEmail(email).orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST));//이거 Repository 개념 다시 설명 받아야 할 듯
+
         if(findEmail.getEmail().equals(email)){
             throw new DuplicateEmailException(ErrorCode.DUPLICATE_EMAIL);
         }
+
         User user = new User(username, email, passwordEncoder.encode(password)); //데이터 타입을 DTO -> Entity로 변경
 
         User saveUser = userRepository.save(user);// user entity를 데이터 베이스에 저장
 
-        return new UserResponseDto(saveUser.getId(), saveUser.getUser());
+        return new UserResponseDto(saveUser.getId(), saveUser.getUsername());
     }
 
 
