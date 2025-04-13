@@ -1,6 +1,7 @@
 package com.example.allin.repository;
 
 import com.example.allin.entity.Post;
+import com.example.allin.entity.User;
 import com.example.allin.exception.PostCustomException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
@@ -17,4 +18,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     }
 
     List<Post> findAllByUser_Id(Long userId);
+
+    void deleteAllByUser(User user);
 }

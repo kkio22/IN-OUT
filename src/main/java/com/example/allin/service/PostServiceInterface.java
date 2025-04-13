@@ -13,5 +13,6 @@ public interface PostServiceInterface {
     List<PostResponseDto> findAllPostByUser(Long userId);
     PostResponseDto updatePost(Long postId, PostRequestDto requestDto);
     void delete(Long postId);
+    void deletePostByUser(Long userId);
     void validateOwner(Long postId, Long currentUserId); // 게시물 작성자-유저 여부 검증용
 }

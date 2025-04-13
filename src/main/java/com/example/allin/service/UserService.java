@@ -24,6 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PostService postService;
 
     @Transactional
     public UserResponseDto save(String username, String email, String password) {
@@ -69,6 +70,8 @@ public class UserService {
         if (!passwordEncoder.matches(password, findPassword.getPassword())) {
             throw new PasswordMismatchException(ErrorCode.INVALID_INPUT_PASSWORD);
         }
+
+        postService.deletePostByUser(userId);
 
         //그 삭제 요청으로 들어오면 해당 시간 값을 넣어주는 매서드를 만들어서 값을 넣어주면 됨
         findPassword.softDelete();

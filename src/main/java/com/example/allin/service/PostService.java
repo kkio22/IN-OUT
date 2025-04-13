@@ -104,6 +104,15 @@ public class PostService implements PostServiceInterface {
         postRepository.delete(findPost);
     }
 
+    @Transactional
+    @Override
+    public void deletePostByUser(Long userId) {
+        //userId 존재 여부 확인
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new PostCustomException(USER_NOT_FOUND));
+        postRepository.deleteAllByUser(user);
+    }
+
     /**
      *
      * @param postId -> Controller에서 PathVariable로 받은 값
