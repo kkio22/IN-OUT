@@ -29,6 +29,10 @@ public class User extends BaseEntity {
     @Column
    private LocalDateTime deletedAt;
 
+    @Column
+    private boolean is_deleted =false;
+
+
 
     public User() {
 
@@ -46,8 +50,10 @@ public class User extends BaseEntity {
     }
 
     public void softDelete(){
+        this.is_deleted = true;
         this.deletedAt= LocalDateTime.now();
     }
+
 
 }
 
