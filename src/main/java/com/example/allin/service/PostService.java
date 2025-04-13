@@ -106,9 +106,11 @@ public class PostService implements PostServiceInterface {
 
     @Transactional
     @Override
-    public void delete(Long postId) {
-        Post findPost = postRepository.findByIdOrElseThrow(postId);
-        postRepository.delete(findPost);
+    public void deletePostByUser(Long userId) {
+        //userId 존재 여부 확인
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new PostCustomException(USER_NOT_FOUND));
+        postRepository.deleteAllByUser(user);
     }
 
     /**
@@ -123,5 +125,12 @@ public class PostService implements PostServiceInterface {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "수정 권한이 없습니다.");
         }
 
+    }
+
+    @Transactional
+    @Override
+    public void delete(Long postId) {
+        Post findPost = postRepository.findByIdOrElseThrow(postId);
+        postRepository.delete(findPost);
     }
 }
