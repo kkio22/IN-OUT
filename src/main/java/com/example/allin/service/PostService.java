@@ -4,10 +4,9 @@ import com.example.allin.dto.PostRequestDto;
 import com.example.allin.dto.PostResponseDto;
 import com.example.allin.entity.Post;
 import com.example.allin.entity.User;
-import com.example.allin.exception.CustomException;
 import com.example.allin.exception.ErrorCode;
 import com.example.allin.exception.PostCustomException;
-import com.example.allin.exception.UserPostException;
+import com.example.allin.exception.NotExistingUserException;
 import com.example.allin.repository.PostLikeRepository;
 import com.example.allin.repository.PostRepository;
 import com.example.allin.repository.UserRepository;
@@ -24,7 +23,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.example.allin.exception.ErrorCode.POST_NOT_FOUND;
 import static com.example.allin.exception.ErrorCode.USER_NOT_FOUND;
 
 @Service
@@ -38,7 +36,7 @@ public class PostService implements PostServiceInterface {
     @Override
     public PostResponseDto createPost(PostRequestDto requestDto, Long userId) {
         User findUser = userRepository.findById(userId)
-                .orElseThrow(() -> new UserPostException(USER_NOT_FOUND));
+                .orElseThrow(() -> new NotExistingUserException(USER_NOT_FOUND));
         Post savedPost = postRepository.save(new Post(requestDto, findUser));
         return new PostResponseDto(savedPost);
     }
@@ -67,6 +65,11 @@ public class PostService implements PostServiceInterface {
     @Override
     public PostResponseDto findById(Long postId) {
         Post findPost = postRepository.findByIdOrElseThrow(postId);
+
+        if(findPost.getUser().isDeleted()){
+            throw new PostCustomException (ErrorCode.POST_NOT_FOUND);
+        }
+
         return new PostResponseDto(findPost);
     }
 
@@ -83,7 +86,11 @@ public class PostService implements PostServiceInterface {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new PostCustomException(USER_NOT_FOUND));
 
-        List<Post> postList = postRepository.findAllByUser_Id(userId);
+        if(user.isDeleted()){
+            throw new PostCustomException(ErrorCode.POST_NOT_FOUND);
+        }
+
+            List<Post> postList = postRepository.findAllByUser_Id(userId);
         return postList.stream()
                 .map(PostResponseDto::new)
                 .collect(Collectors.toList());

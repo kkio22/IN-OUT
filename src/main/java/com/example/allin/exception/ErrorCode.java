@@ -13,8 +13,7 @@ public enum ErrorCode {
     INVALID_INPUT_PASSWORD(400, "BAD_REQUEST", "U001","비밀번호가 다릅니다."),
     INVALID_INPUT_ID(400, "BAD_REQUEST", "U002", "아이디가 다릅니다." ),
     DUPLICATE_PASSWORD(400, "BAD_REQUEST", "U003", "이전 비밀번호와 같습니다."),
-    DUPLICATE_EMAIL(400, "BAD_REQUEST", "U004", "중복된 이메일입니다"),
-    INVALID_INPUT_VALUE( 400, "BAD_REQUEST", "U005", "Invalid Input Value"),
+    INVALID_INPUT_VALUE( 400, "BAD_REQUEST", "U004", "Invalid Input Value"),
 
     // 친구 관련 에러 코드
     FRIEND_NOT_FOUND(404, "NOT_FOUND", "F001", "친구를 찾을 수 없습니다."),
@@ -24,7 +23,7 @@ public enum ErrorCode {
 
     // Post
     POST_NOT_FOUND(401, "BAD_REQUEST", "P001", "게시물이 존재하지 않습니다."),
-    USER_NOT_FOUND(401, "BAD_REQUEST", "P002", "유저가 존재하지 않습니다."),
+    USER_NOT_FOUND(401, "BAD_REQUEST", "P002", "회원이 존재하지 않습니다."),
 
     //comment
     COMMENT_USER_NOT_FOUND(400, "BAD_REQUEST", "C001", "사용자가 없습니다."),
