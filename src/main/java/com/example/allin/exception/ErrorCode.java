@@ -13,7 +13,7 @@ public enum ErrorCode {
     INVALID_INPUT_PASSWORD(400, "BAD_REQUEST", "U001","비밀번호가 다릅니다."),
     INVALID_INPUT_ID(400, "BAD_REQUEST", "U002", "아이디가 다릅니다." ),
     DUPLICATE_PASSWORD(400, "BAD_REQUEST", "U003", "이전 비밀번호와 같습니다."),
-    INVALID_INPUT_VALUE( 400, "BAD_REQUEST", "U004", "Invalid Input Value"),
+    INVALID_INPUT_VALUE( 400, "BAD_REQUEST", "U004", "잘못된 비밀번호입니다."),
 
     // 친구 관련 에러 코드
     FRIEND_NOT_FOUND(404, "NOT_FOUND", "F001", "친구를 찾을 수 없습니다."),

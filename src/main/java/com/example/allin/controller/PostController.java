@@ -56,7 +56,7 @@ public class PostController implements PostControllerInterface {
             @Validated @RequestBody PostRequestDto requestDto,
             @SessionAttribute(name = "sessionResponseDto") SessionResponseDto sessionResponseDto
     ) {
-        /**
+        /*
          * 로그인한 유저만 본인의 게시글 수정 가능
          */
         postService.validateOwner(postId, sessionResponseDto.getId());
@@ -72,7 +72,7 @@ public class PostController implements PostControllerInterface {
             @SessionAttribute(name = "sessionResponseDto") SessionResponseDto sessionResponseDto
     ) {
 
-        // User 테이블의 PK가 userId로 지정되어 있고 Getter가 있어야 함(통합 시 체크포인트)
+        // User 테이블의 PK가 userId로 지정되어 있고 Getter 가 있어야 함(통합 시 체크포인트)
         postService.validateOwner(postId, sessionResponseDto.getId());
         postService.delete(postId);
 
