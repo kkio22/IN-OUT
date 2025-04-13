@@ -4,10 +4,7 @@ import com.example.allin.config.PasswordEncoder;
 import com.example.allin.dto.SessionResponseDto;
 import com.example.allin.dto.UserResponseDto;
 import com.example.allin.entity.User;
-import com.example.allin.exception.ErrorCode;
-import com.example.allin.exception.InvalidPasswordException;
-import com.example.allin.exception.PasswordMismatchException;
-import com.example.allin.exception.UserIdMismatchException;
+import com.example.allin.exception.*;
 import com.example.allin.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
@@ -27,13 +24,17 @@ public class UserService {
 
     @Transactional
     public UserResponseDto save(String username, String email, String password) {
+        User findEmail = userRepository.findByEmail(email).orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST));//이거 Repository 개념 다시 설명 받아야 할 듯
+        if(findEmail.getEmail().equals(email)){
+            throw new DuplicateEmailException(ErrorCode.DUPLICATE_EMAIL);
+        }
+        User user = new User(username, email, passwordEncoder.encode(password)); //데이터 타입을 DTO -> Entity로 변경
 
-        User user = new User(username, email, passwordEncoder.encode(password));
+        User saveUser = userRepository.save(user);// user entity를 데이터 베이스에 저장
 
-        User saveUser = userRepository.save(user);
-
-        return new UserResponseDto(saveUser.getId(), saveUser.getUsername());
+        return new UserResponseDto(saveUser.getId(), saveUser.getUser());
     }
+
 
     @Transactional
     public UserResponseDto findById(Long userId) {
